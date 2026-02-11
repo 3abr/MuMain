@@ -24,9 +24,19 @@
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          }
+        ]
       }
     },
     {
@@ -86,6 +96,22 @@
       }
     },
     {
+      "name": "windows-x86-release",
+      "inherits": "windows-x86"
+    },
+    {
+      "name": "windows-x86-debug",
+      "inherits": "windows-x86"
+    },
+    {
+      "name": "windows-x64-release",
+      "inherits": "windows-x64"
+    },
+    {
+      "name": "windows-x64-debug",
+      "inherits": "windows-x64"
+    },
+    {
       "name": "windows-x86-v097",
       "displayName": "Windows x86 v0.97",
       "description": "v0.97 compatibility build without editor features",
@@ -105,22 +131,18 @@
     },
     {
       "name": "windows-x86-v097-release",
-      "hidden": true,
       "inherits": "windows-x86-v097"
     },
     {
       "name": "windows-x86-v097-debug",
-      "hidden": true,
       "inherits": "windows-x86-v097"
     },
     {
       "name": "windows-x64-v097-release",
-      "hidden": true,
       "inherits": "windows-x64-v097"
     },
     {
       "name": "windows-x64-v097-debug",
-      "hidden": true,
       "inherits": "windows-x64-v097"
     }
   ],
