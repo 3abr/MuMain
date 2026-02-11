@@ -97,19 +97,23 @@
     },
     {
       "name": "windows-x86-release",
-      "inherits": "windows-x86"
+      "inherits": "windows-x86",
+      "binaryDir": "${sourceDir}/out/build/windows-x86"
     },
     {
       "name": "windows-x86-debug",
-      "inherits": "windows-x86"
+      "inherits": "windows-x86",
+      "binaryDir": "${sourceDir}/out/build/windows-x86"
     },
     {
       "name": "windows-x64-release",
-      "inherits": "windows-x64"
+      "inherits": "windows-x64",
+      "binaryDir": "${sourceDir}/out/build/windows-x64"
     },
     {
       "name": "windows-x64-debug",
-      "inherits": "windows-x64"
+      "inherits": "windows-x64",
+      "binaryDir": "${sourceDir}/out/build/windows-x64"
     },
     {
       "name": "windows-x86-v097",
@@ -131,19 +135,23 @@
     },
     {
       "name": "windows-x86-v097-release",
-      "inherits": "windows-x86-v097"
+      "inherits": "windows-x86-v097",
+      "binaryDir": "${sourceDir}/out/build/windows-x86-v097"
     },
     {
       "name": "windows-x86-v097-debug",
-      "inherits": "windows-x86-v097"
+      "inherits": "windows-x86-v097",
+      "binaryDir": "${sourceDir}/out/build/windows-x86-v097"
     },
     {
       "name": "windows-x64-v097-release",
-      "inherits": "windows-x64-v097"
+      "inherits": "windows-x64-v097",
+      "binaryDir": "${sourceDir}/out/build/windows-x64-v097"
     },
     {
       "name": "windows-x64-v097-debug",
-      "inherits": "windows-x64-v097"
+      "inherits": "windows-x64-v097",
+      "binaryDir": "${sourceDir}/out/build/windows-x64-v097"
     }
   ],
   "buildPresets": [
