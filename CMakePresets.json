@@ -5,6 +5,15 @@
     "minor": 25,
     "patch": 0
   },
+  "vendor": {
+    "zoombie.build/version-compatibility": {
+      "note": "Base windows presets target Season 6 (default). Use *-v097-* presets to enable ENABLE_V097_COMPAT for MU Online v0.97 server compatibility.",
+      "usage": [
+        "cmake --preset windows-x86-release && cmake --build --preset windows-x86-release",
+        "cmake --preset windows-x86-v097-release && cmake --build --preset windows-x86-v097-release"
+      ]
+    }
+  },
   "configurePresets": [
     {
       "name": "windows-base",
@@ -23,7 +32,7 @@
     {
       "name": "windows-x86",
       "displayName": "Windows x86",
-      "description": "Standard build without editor features",
+      "description": "Season 6 default build without editor features",
       "inherits": "windows-base",
       "architecture": {
         "value": "x86",
@@ -51,7 +60,7 @@
     {
       "name": "windows-x64",
       "displayName": "Windows x64",
-      "description": "Standard build without editor features",
+      "description": "Season 6 default build without editor features",
       "inherits": "windows-base",
       "architecture": {
         "value": "x64",
