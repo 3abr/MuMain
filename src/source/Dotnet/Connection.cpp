@@ -23,7 +23,9 @@ void ReportDotNetError(const char* detail)
 
     wchar_t buffer[512];
     std::swprintf(buffer, std::size(buffer),
-        L"Failed to initialize the managed client library (%hs). The game client cannot connect to the server.",
+        L"Failed to initialize the managed client library (%hs). The game client cannot connect to the server.\n\n"
+        L"Most common cause: MUnique.Client.Library.dll was built as a regular managed DLL instead of a NativeAOT native library with exported ConnectionManager_* symbols.\n"
+        L"Rebuild ClientLibrary with PublishAot=true and NativeLib=Shared for the target Windows architecture.",
         detail ? detail : "unknown error");
 #ifdef _WIN32
     MessageBoxW(nullptr, buffer, L"MuMainClient", MB_ICONERROR | MB_OK);

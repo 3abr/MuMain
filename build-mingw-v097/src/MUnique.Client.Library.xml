@@ -1,0 +1,2585 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MUnique.Client.Library</name>
+    </assembly>
+    <members>
+        <member name="T:MUnique.Client.Library.ConnectionManager">
+            <summary>
+            Extension methods to start writing messages of this namespace on a <see cref="T:MUnique.OpenMU.Network.IConnection"/>.
+            </summary>
+            <summary>
+            Extension methods to start writing messages of this namespace on a <see cref="T:MUnique.OpenMU.Network.IConnection"/>.
+            </summary>
+            <summary>
+            Extension methods to start writing messages of this namespace on a <see cref="T:MUnique.OpenMU.Network.IConnection"/>.
+            </summary>
+            <summary>
+            Extension methods to start writing messages of this namespace on a <see cref="T:MUnique.OpenMU.Network.IConnection"/>.
+            </summary>
+            <summary>
+            Extension methods to start writing messages of this namespace on a <see cref="T:MUnique.OpenMU.Network.IConnection"/>.
+            </summary>
+            <summary>
+            Class which manages the connections which are created through the game client.
+            To identify each connection, we use handles (a simple number).
+            </summary>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAuthenticateExt(System.Int32,System.UInt16,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.Authenticate" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="roomId">The room id.</param>
+            <param name="token">The token to authenticate the client.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client after it connected to the server, to authenticate itself.
+            Causes reaction on server side: The server will check the token. If it's correct, the client gets added to the requested chat room.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChatMessageExt(System.Int32,System.Byte,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.ChatMessage" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="senderIndex">The sender index.</param>
+            <param name="message">The message. It's "encrypted" with the 3-byte XOR key (FC CF AB).</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after another chat client sent a message to the current chat room.
+            Causes reaction on client side: The client will show the message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAuthenticate(System.Int32,System.UInt16,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.Authenticate" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="roomId">The room id.</param>
+            <param name="token">A token (integer number), formatted as string and "encrypted" with the 3-byte XOR key (FC CF AB).</param>
+            <param name="tokenByteLength">The length of <paramref name="token"/>.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client after it connected to the server, to authenticate itself.
+            Causes reaction on server side: The server will check the token. If it's correct, the client gets added to the requested chat room.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChatRoomClientJoined(System.Int32,System.Byte,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.ChatRoomClientJoined" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="clientIndex">The client index.</param>
+            <param name="name">The name.</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after another chat client joined the chat room.
+            Causes reaction on client side: The client will add the client in its list (if over 2 clients are connected to the same room), or show its name in the title bar.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLeaveChatRoom(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.LeaveChatRoom" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client when it leaves the chat room, before the connection closes.
+            Causes reaction on server side: The server will remove the client from the chat room, notifying the remaining clients.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChatRoomClientLeft(System.Int32,System.Byte,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.ChatRoomClientLeft" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="clientIndex">The client index.</param>
+            <param name="name">The name.</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after a chat client left the chat room.
+            Causes reaction on client side: The client will remove the client from its list, or mark its name in the title bar as offline.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChatMessage(System.Int32,System.Byte,System.Byte,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.ChatMessage" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="senderIndex">The sender index.</param>
+            <param name="messageLength">The message length.</param>
+            <param name="message">The message. It's "encrypted" with the 3-byte XOR key (FC CF AB).</param>
+            <param name="messageByteLength">The length of <paramref name="message"/>.</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after another chat client sent a message to the current chat room.
+            Causes reaction on client side: The client will show the message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendKeepAlive(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ChatServer.KeepAlive" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client in a fixed interval.
+            Causes reaction on server side: The server will keep the connection and chat room intact as long as the clients sends a message in a certain period of time.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLogin(System.Int32,System.IntPtr,System.IntPtr,System.UInt32,System.Byte*,System.Byte*)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LoginLongPassword" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="username">The user name, "encrypted" with Xor3.</param>
+            <param name="password">The password, "encrypted" with Xor3.</param>
+            <param name="tickCount">The tick count.</param>
+            <param name="clientVersion">The client version.</param>
+            <param name="clientSerial">The client serial.</param>
+            <remarks>
+            Is sent by the client when: The player tries to log into the game.
+            Causes reaction on server side: The server is authenticating the sent login name and password. If it's correct, the state of the player is proceeding to be logged in.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPing(System.Int32,System.UInt32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.Ping" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="tickCount">The tick count.</param>
+            <param name="attackSpeed">The attack speed.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client every few seconds. It contains the current "TickCount" of the client operating system and the attack speed of the selected character.
+            Causes reaction on server side: By the original server this is used to detect speed hacks.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChecksumResponse(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ChecksumResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="checksum">The checksum.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client as a response to a request with a challenge value.
+            Causes reaction on server side: By the original server, this is used to detect a modified client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPublicChatMessage(System.Int32,System.IntPtr,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PublicChatMessage" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="character">The character.</param>
+            <param name="message">The message.</param>
+            <remarks>
+            Is sent by the client when: A player sends a public chat message.
+            Causes reaction on server side: The message is forwarded to all surrounding players, including the sender.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendWhisperMessage(System.Int32,System.IntPtr,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.WhisperMessage" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="receiverName">The receiver name.</param>
+            <param name="message">The message.</param>
+            <remarks>
+            Is sent by the client when: A player sends a private chat message to a specific target player.
+            Causes reaction on server side: The message is forwarded to the target player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLoginLongPassword(System.Int32,System.Byte*,System.UInt32,System.Byte*,System.UInt32,System.UInt32,System.Byte*,System.UInt32,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LoginLongPassword" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="username">The user name, "encrypted" with Xor3.</param>
+            <param name="usernameByteLength">The length of <paramref name="username"/>.</param>
+            <param name="password">The password, "encrypted" with Xor3.</param>
+            <param name="passwordByteLength">The length of <paramref name="password"/>.</param>
+            <param name="tickCount">The tick count.</param>
+            <param name="clientVersion">The client version.</param>
+            <param name="clientVersionByteLength">The length of <paramref name="clientVersion"/>.</param>
+            <param name="clientSerial">The client serial.</param>
+            <param name="clientSerialByteLength">The length of <paramref name="clientSerial"/>.</param>
+            <remarks>
+            Is sent by the client when: The player tries to log into the game.
+            Causes reaction on server side: The server is authenticating the sent login name and password. If it's correct, the state of the player is proceeding to be logged in.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLoginShortPassword(System.Int32,System.Byte*,System.UInt32,System.Byte*,System.UInt32,System.UInt32,System.Byte*,System.UInt32,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LoginShortPassword" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="username">The user name, "encrypted" with Xor3.</param>
+            <param name="usernameByteLength">The length of <paramref name="username"/>.</param>
+            <param name="password">The password, "encrypted" with Xor3.</param>
+            <param name="passwordByteLength">The length of <paramref name="password"/>.</param>
+            <param name="tickCount">The tick count.</param>
+            <param name="clientVersion">The client version.</param>
+            <param name="clientVersionByteLength">The length of <paramref name="clientVersion"/>.</param>
+            <param name="clientSerial">The client serial.</param>
+            <param name="clientSerialByteLength">The length of <paramref name="clientSerial"/>.</param>
+            <remarks>
+            Is sent by the client when: The player tries to log into the game.
+            Causes reaction on server side: The server is authenticating the sent login name and password. If it's correct, the state of the player is proceeding to be logged in.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLogin075(System.Int32,System.Byte*,System.UInt32,System.Byte*,System.UInt32,System.UInt32,System.Byte*,System.UInt32,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.Login075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="username">The user name, "encrypted" with Xor3.</param>
+            <param name="usernameByteLength">The length of <paramref name="username"/>.</param>
+            <param name="password">The password, "encrypted" with Xor3.</param>
+            <param name="passwordByteLength">The length of <paramref name="password"/>.</param>
+            <param name="tickCount">The tick count.</param>
+            <param name="clientVersion">The client version.</param>
+            <param name="clientVersionByteLength">The length of <paramref name="clientVersion"/>.</param>
+            <param name="clientSerial">The client serial.</param>
+            <param name="clientSerialByteLength">The length of <paramref name="clientSerial"/>.</param>
+            <remarks>
+            Is sent by the client when: The player tries to log into the game.
+            Causes reaction on server side: The server is authenticating the sent login name and password. If it's correct, the state of the player is proceeding to be logged in.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLogOut(System.Int32,MUnique.OpenMU.Network.Packets.LogOutType)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LogOut" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="type">The type.</param>
+            <remarks>
+            Is sent by the client when: When the client wants to leave the game in various ways.
+            Causes reaction on server side: Depending on the LogOutType, the game server does several checks and sends a response back to the client. If the request was successful, the game client either closes the game, goes back to server or character selection.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLogOutByCheatDetection(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LogOutByCheatDetection" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="param">The param.</param>
+            <param name="type">The type.</param>
+            <remarks>
+            Is sent by the client when: When the client wants to leave the game in various ways.
+            Causes reaction on server side: Depending on the LogOutType, the game server does several checks and sends a response back to the client. If the request was successful, the game client either closes the game, goes back to server or character selection.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendResetCharacterPointRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ResetCharacterPointRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: Unknown?
+            Causes reaction on server side: Unknown?
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPlayerShopSetItemPrice(System.Int32,System.Byte,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PlayerShopSetItemPrice" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">The item slot.</param>
+            <param name="price">The price.</param>
+            <remarks>
+            Is sent by the client when: The player wants to set a price of an item which is inside his personal item shop.
+            Causes reaction on server side: The price is set for the specified item. Works only if the shop is currently closed.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPlayerShopOpen(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PlayerShopOpen" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="storeName">The store name.</param>
+            <remarks>
+            Is sent by the client when: The player wants to open his personal item shop.
+            Causes reaction on server side: The personal item shop is opened and the surrounding players are informed about it, including the own player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPlayerShopClose(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PlayerShopClose" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player wants to close his personal item shop.
+            Causes reaction on server side: The personal item shop is closed and the surrounding players are informed about it, including the own player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPlayerShopItemListRequest(System.Int32,System.UInt16,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PlayerShopItemListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerId">The player id.</param>
+            <param name="playerName">The player name.</param>
+            <remarks>
+            Is sent by the client when: A player opens a shop of another player.
+            Causes reaction on server side: The list of items is sent back, if the shop of the player is currently open.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPlayerShopItemBuyRequest(System.Int32,System.UInt16,System.IntPtr,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PlayerShopItemBuyRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerId">The player id.</param>
+            <param name="playerName">The player name.</param>
+            <param name="itemSlot">The item slot.</param>
+            <remarks>
+            Is sent by the client when: A player wants to buy the item of another players shop.
+            Causes reaction on server side: If the buyer has enough money, the item is sold to the player. Both players will get notifications about that.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPlayerShopCloseOther(System.Int32,System.UInt16,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PlayerShopCloseOther" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerId">The player id.</param>
+            <param name="playerName">The player name.</param>
+            <remarks>
+            Is sent by the client when: A player closes the dialog of another players shop.
+            Causes reaction on server side: The server handles that by unsubscribing the player from changes of the shop.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPickupItemRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PickupItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemId">The item id.</param>
+            <remarks>
+            Is sent by the client when: A player requests to pick up an item which is laying on the ground in the near of the players character.
+            Causes reaction on server side: If the player is allowed to pick the item up, and is the first player which tried that, it tries to add the item to the inventory. The server sends a response about the result of the request.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPickupItemRequest075(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PickupItemRequest075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemId">The item id.</param>
+            <remarks>
+            Is sent by the client when: A player requests to pick up an item which is laying on the ground in the near of the players character.
+            Causes reaction on server side: If the player is allowed to pick the item up, and is the first player which tried that, it tries to add the item to the inventory. The server sends a response about the result of the request.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDropItemRequest(System.Int32,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DropItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="targetX">The target x.</param>
+            <param name="targetY">The target y.</param>
+            <param name="itemSlot">The item slot.</param>
+            <remarks>
+            Is sent by the client when: A player requests to drop on item of his inventory on the ground.
+            Causes reaction on server side: When the specified coordinates are valid, and the item is allowed to be dropped, it will be dropped on the ground and the surrounding players are notified.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendItemMoveRequest(System.Int32,MUnique.OpenMU.Network.Packets.ItemStorageKind,System.Byte,System.Byte*,System.UInt32,MUnique.OpenMU.Network.Packets.ItemStorageKind,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ItemMoveRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="fromStorage">The from storage.</param>
+            <param name="fromSlot">The from slot.</param>
+            <param name="itemData">The item data.</param>
+            <param name="itemDataByteLength">The length of <paramref name="itemData"/>.</param>
+            <param name="toStorage">The to storage.</param>
+            <param name="toSlot">The to slot.</param>
+            <remarks>
+            Is sent by the client when: A player requests to move an item within or between his available item storage, such as inventory, vault, trade or chaos machine.
+            Causes reaction on server side: 
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendItemMoveRequestExtended(System.Int32,MUnique.OpenMU.Network.Packets.ItemStorageKind,System.Byte,MUnique.OpenMU.Network.Packets.ItemStorageKind,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ItemMoveRequestExtended" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="fromStorage">The from storage.</param>
+            <param name="fromSlot">The from slot.</param>
+            <param name="toStorage">The to storage.</param>
+            <param name="toSlot">The to slot.</param>
+            <remarks>
+            Is sent by the client when: A player requests to move an item within or between his available item storage, such as inventory, vault, trade or chaos machine.
+            Causes reaction on server side: 
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendConsumeItemRequest(System.Int32,System.Byte,System.Byte,MUnique.OpenMU.Network.Packets.ClientToServer.ConsumeItemRequest.FruitUsage)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ConsumeItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">The inventory slot index of the item which should be consumed.</param>
+            <param name="targetSlot">If the item has an effect on another item, e.g. upgrading it, this field contains the inventory slot index of the target item.</param>
+            <param name="fruitConsumption">Defines how the fruit is used. Only applies, if the the item is a fruit.</param>
+            <remarks>
+            Is sent by the client when: A player requests to 'consume' an item. This can be a potion which recovers some kind of attribute, or a jewel to upgrade a target item.
+            Causes reaction on server side: The server tries to 'consume' the specified item and responses accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendConsumeItemRequest075(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ConsumeItemRequest075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">The inventory slot index of the item which should be consumed.</param>
+            <param name="targetSlot">If the item has an effect on another item, e.g. upgrading it, this field contains the inventory slot index of the target item.</param>
+            <remarks>
+            Is sent by the client when: A player requests to 'consume' an item. This can be a potion which recovers some kind of attribute, or a jewel to upgrade a target item.
+            Causes reaction on server side: The server tries to 'consume' the specified item and responses accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTalkToNpcRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TalkToNpcRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="npcId">The npc id.</param>
+            <remarks>
+            Is sent by the client when: A player wants to talk to an NPC.
+            Causes reaction on server side: Based on the NPC type, the server sends a response back to the game client. For example, if it's a merchant NPC, it sends back that a merchant dialog should be opened and which items are offered by this NPC.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCloseNpcRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CloseNpcRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player closes the dialog which was opened by an interaction with a NPC.
+            Causes reaction on server side: The server updates the state of the player accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendBuyItemFromNpcRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.BuyItemFromNpcRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">Item Slot (NPC Store)</param>
+            <remarks>
+            Is sent by the client when: A player wants to buy an item from an opened NPC merchant.
+            Causes reaction on server side: If the player has enough money, the item is added to the inventory and money is removed. Corresponding messages are sent back to the game client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSellItemToNpcRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SellItemToNpcRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">Item Slot (Inventory)</param>
+            <remarks>
+            Is sent by the client when: A player wants to sell an item of his inventory to the opened NPC merchant.
+            Causes reaction on server side: The item is sold for money to the NPC. The item is removed from the inventory and money is added. Corresponding messages are sent back to the game client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRepairItemRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RepairItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">Inventory item slot of the target item. If it's 0xFF, the player wants to repair all items - this is only possible with some opened NPC dialogs. Repairing the pet item slot (8) is only possible when the pet trainer npc is opened.</param>
+            <param name="isSelfRepair">If the player repairs it over his inventory, it's true. However, a server should never rely on this flag and do his own checks.</param>
+            <remarks>
+            Is sent by the client when: A player wants to repair an item of his inventory.
+            Causes reaction on server side: The item is repaired if the player has enough money in its inventory. A corresponding response is sent.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendWarpCommandRequest(System.Int32,System.UInt32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.WarpCommandRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="commandKey">A command key, which is generated by a 'secret' algorithm. Not considered in OpenMU.</param>
+            <param name="warpInfoIndex">The index of the entry in the warp list.</param>
+            <remarks>
+            Is sent by the client when: A player selected to warp by selecting an entry in the warp list (configured in game client files).
+            Causes reaction on server side: If the player has enough money and is allowed to enter the map, it's getting moved to there.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEnterGateRequest(System.Int32,System.UInt16,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EnterGateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="gateNumber">The gate number.</param>
+            <param name="teleportTargetX">The teleport target x.</param>
+            <param name="teleportTargetY">The teleport target y.</param>
+            <remarks>
+            Is sent by the client when: Usually: When the player enters an area on the game map which is configured as gate at the client data files. In the special case of wizards, this packet is also used for the teleport skill. When this is the case, GateNumber is 0 and the target coordinates are specified.
+            Causes reaction on server side: If the player is allowed to enter the "gate", it's moved to the corresponding exit gate area.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEnterGateRequest075(System.Int32,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EnterGateRequest075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="gateNumber">The gate number.</param>
+            <param name="teleportTargetX">The teleport target x.</param>
+            <param name="teleportTargetY">The teleport target y.</param>
+            <remarks>
+            Is sent by the client when: Usually: When the player enters an area on the game map which is configured as gate at the client data files. In the special case of wizards, this packet is also used for the teleport skill. When this is the case, GateNumber is 0 and the target coordinates are specified.
+            Causes reaction on server side: If the player is allowed to enter the "gate", it's moved to the corresponding exit gate area.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTeleportTarget(System.Int32,System.UInt16,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TeleportTarget" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="targetId">The target id.</param>
+            <param name="teleportTargetX">The teleport target x.</param>
+            <param name="teleportTargetY">The teleport target y.</param>
+            <remarks>
+            Is sent by the client when: A wizard uses the 'Teleport Ally' skill to teleport a party member of his view range to a nearby coordinate.
+            Causes reaction on server side: If the target player is in the same party and in the range, it will teleported to the specified coordinates.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendServerChangeAuthentication(System.Int32,System.Byte*,System.UInt32,System.Byte*,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.Byte*,System.UInt32,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ServerChangeAuthentication" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="accountXor3">The account xor 3.</param>
+            <param name="accountXor3ByteLength">The length of <paramref name="accountXor3"/>.</param>
+            <param name="characterNameXor3">The character name xor 3.</param>
+            <param name="characterNameXor3ByteLength">The length of <paramref name="characterNameXor3"/>.</param>
+            <param name="authCode1">The auth code 1.</param>
+            <param name="authCode2">The auth code 2.</param>
+            <param name="authCode3">The auth code 3.</param>
+            <param name="authCode4">The auth code 4.</param>
+            <param name="tickCount">The tick count.</param>
+            <param name="clientVersion">The client version.</param>
+            <param name="clientVersionByteLength">The length of <paramref name="clientVersion"/>.</param>
+            <param name="clientSerial">The client serial.</param>
+            <param name="clientSerialByteLength">The length of <paramref name="clientSerial"/>.</param>
+            <remarks>
+            Is sent by the client when: After the client connected to another server due map change.
+            Causes reaction on server side: The player spawns on the new server.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeStatusRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeStatusRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc and requests the current castle siege status information.
+            Causes reaction on server side: The server returns the status of the castle siege event.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeRegistrationRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeRegistrationRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc to register his guild alliance.
+            Causes reaction on server side: The server returns the result of the castle siege registration.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeUnregisterRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeUnregisterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="isGivingUp">The is giving up.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc to un-register his guild alliance.
+            Causes reaction on server side: The server returns the result of the castle siege un-registration.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeRegistrationStateRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeRegistrationStateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc and requests the state about the own registration.
+            Causes reaction on server side: The server returns the state of the castle siege registration, which includes the number of submitted guild marks.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeMarkRegistration(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeMarkRegistration" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemIndex">The item index.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc and adds a guild mark to his guilds registration.
+            Causes reaction on server side: The server returns a response, which includes the number of submitted guild marks.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeDefenseBuyRequest(System.Int32,System.UInt32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeDefenseBuyRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="npcNumber">The npc number.</param>
+            <param name="npcIndex">The npc index.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc and requests to buy a gate or statue for a specific position (index)..
+            Causes reaction on server side: The server returns a response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeDefenseRepairRequest(System.Int32,System.UInt32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeDefenseRepairRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="npcNumber">The npc number.</param>
+            <param name="npcIndex">The npc index.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc and requests to repair a gate or statue at a specific position (index)..
+            Causes reaction on server side: The server returns a response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeDefenseUpgradeRequest(System.Int32,System.UInt32,System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeDefenseUpgradeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="npcNumber">The npc number.</param>
+            <param name="npcIndex">The npc index.</param>
+            <param name="npcUpgradeType">The npc upgrade type.</param>
+            <param name="npcUpgradeValue">The npc upgrade value.</param>
+            <remarks>
+            Is sent by the client when: The player opened a castle siege npc and requests to upgrade a gate or statue at a specific position (index)..
+            Causes reaction on server side: The server returns a response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeTaxInfoRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeTaxInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The guild master opened a castle siege npc to manage the castle.
+            Causes reaction on server side: The server returns the tax information.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeTaxChangeRequest(System.Int32,System.Byte,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeTaxChangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="taxType">0=Undefined, 1=ChaosMachine, 2 = Normal, 3 = EntranceFeeLandOfTrials</param>
+            <param name="taxRate">The tax rate.</param>
+            <remarks>
+            Is sent by the client when: The guild master wants to change the tax rate in the castle npc.
+            Causes reaction on server side: The server changes the tax rates accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeTaxMoneyWithdraw(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeTaxMoneyWithdraw" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="amount">The amount.</param>
+            <remarks>
+            Is sent by the client when: The guild master wants to withdraw the tax money from the castle npc.
+            Causes reaction on server side: The server moves the money into the inventory of the guild master.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendToggleCastleGateRequest(System.Int32,System.Byte,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ToggleCastleGateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="closeState">The close state.</param>
+            <param name="gateId">The gate id.</param>
+            <remarks>
+            Is sent by the client when: The guild member of the castle owner wants to toggle the gate switch.
+            Causes reaction on server side: The castle gate is getting opened or closed.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleGuildCommand(System.Int32,System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleGuildCommand" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="team">Team Number 0 to 7.</param>
+            <param name="positionX">The position x.</param>
+            <param name="positionY">The position y.</param>
+            <param name="command">0 = Attack, 1 = Defend, 2 = Wait</param>
+            <remarks>
+            Is sent by the client when: The guild master sent a command to his guild during the castle siege event.
+            Causes reaction on server side: The command is shown on the mini map of the guild members.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeHuntingZoneEntranceSetting(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeHuntingZoneEntranceSetting" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="isPublic">The is public.</param>
+            <remarks>
+            Is sent by the client when: A guild member of the castle owners wants to enter the hunting zone (e.g. Land of Trials).
+            Causes reaction on server side: The server changes the entrance setting of the hunting zone.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeGateListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeGateListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The guild master opened the castle npc and the client needs a list of all gates.
+            Causes reaction on server side: The server returns the list of gates and their status.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeStatueListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeStatueListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The guild master opened the castle npc and the client needs a list of all statues.
+            Causes reaction on server side: The server returns the list of statues and their status.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeRegisteredGuildsListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeRegisteredGuildsListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The guild master opened an npc and needs the list of registered guilds for the next siege.
+            Causes reaction on server side: The server returns the list of guilds for the next siege.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleOwnerListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleOwnerListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The guild master opened an npc and needs the list of current guilds which are the castle owners.
+            Causes reaction on server side: The server returns the list of guilds which are the castle owners.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendFireCatapultRequest(System.Int32,System.UInt16,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.FireCatapultRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="catapultId">The catapult id.</param>
+            <param name="targetAreaIndex">The target area index.</param>
+            <remarks>
+            Is sent by the client when: A player wants to fire a catapult during the castle siege event.
+            Causes reaction on server side: The server fires the catapult.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendWeaponExplosionRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.WeaponExplosionRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="catapultId">The catapult id.</param>
+            <remarks>
+            Is sent by the client when: After the player fired a catapult and hit another catapult.
+            Causes reaction on server side: The server damages the other catapult.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildLogoOfCastleOwnerRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildLogoOfCastleOwnerRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The client requests the guild logo of the current castle owner guild.
+            Causes reaction on server side: The server returns the guild logo.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCastleSiegeHuntingZoneEnterRequest(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeHuntingZoneEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="money">The money.</param>
+            <remarks>
+            Is sent by the client when: A guild member of the castle owners wants to enter the hunting zone (e.g. Land of Trials).
+            Causes reaction on server side: The server takes the entrance money, puts it into the tax wallet and warps the player to the hunting zone.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCrywolfInfoRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CrywolfInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player enters the crywolf map.
+            Causes reaction on server side: The server returns data about the state of the crywolf map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCrywolfContractRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CrywolfContractRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="statueId">The statue id.</param>
+            <remarks>
+            Is sent by the client when: A player wants to make a contract at the crywolf statue for the crywolf event.
+            Causes reaction on server side: The server tries to enter a contract with the player and the specified statue.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCrywolfChaosRateBenefitRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CrywolfChaosRateBenefitRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player opens an item crafting dialog, e.g. the chaos machine.
+            Causes reaction on server side: The server returns data about the state of the benefit of the crywolf event. If it was won before, the chaos rate wents up a few percent.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendWhiteAngelItemRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.WhiteAngelItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: ?.
+            Causes reaction on server side: ?.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEnterOnWerewolfRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EnterOnWerewolfRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player is running the quest "Infiltrate The Barracks of Balgass" (nr. 5), talking to the Werewolf npc in Crywolf.
+            Causes reaction on server side: It will warp the player to the map 'Barracks of Balgass' where the required monsters have to be killed to proceed with the quest.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEnterOnGatekeeperRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EnterOnGatekeeperRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player is running the quest "Into the 'Darkness' Zone" (nr. 6), talking to the gatekeeper npc in 'Barracks of Balgass'.
+            Causes reaction on server side: It will warp the player to the map 'Balgass Refuge' where the required monsters have to be killed to proceed with the quest.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLeoHelperItemRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LeoHelperItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player talks to the npc "Leo the Helper" and requests an item.
+            Causes reaction on server side: The item will drop on the ground.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMoveToDeviasBySnowmanRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MoveToDeviasBySnowmanRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player talks to the npc "Snowman" in Santa Village and requests to warp back to devias.
+            Causes reaction on server side: The player will be warped back to Devias.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSantaClausItemRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SantaClausItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player talks to the npc "Santa Claus" and requests an item.
+            Causes reaction on server side: The item will drop on the ground.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendKanturuInfoRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.KanturuInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player talks with the kanturu entrance npc, and shows the enter dialog.
+            Causes reaction on server side: The server returns data about the state of the kanturu event map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendKanturuEnterRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.KanturuEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player requests to enter the kanturu event map.
+            Causes reaction on server side: The server checks, if entrance is possible and acts accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRaklionStateInfoRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RaklionStateInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: ?
+            Causes reaction on server side: ?
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopPointInfoRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopPointInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The client needs information about how many cash shop points (WCoinC, WCoinP, GoblinPoints) are available to the player.
+            Causes reaction on server side: The server returns the cash shop points information.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopOpenState(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopOpenState" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="isClosed">The is closed.</param>
+            <remarks>
+            Is sent by the client when: The player opens or closes the cash shop dialog.
+            Causes reaction on server side: In case of opening, the server returns if the cash shop is available. If the player is in the safezone, it's not.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopItemBuyRequest(System.Int32,System.UInt32,System.UInt32,System.UInt32,System.UInt16,System.UInt32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopItemBuyRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="packageMainIndex">The package main index.</param>
+            <param name="category">The category.</param>
+            <param name="productMainIndex">The product main index.</param>
+            <param name="itemIndex">The item index.</param>
+            <param name="coinIndex">The coin index.</param>
+            <param name="mileageFlag">The mileage flag.</param>
+            <remarks>
+            Is sent by the client when: The player wants to buy an item in the cash shop.
+            Causes reaction on server side: The item is bought and added to the cash shop item storage of the player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopItemGiftRequest(System.Int32,System.UInt32,System.UInt32,System.UInt32,System.UInt16,System.UInt32,System.Byte,System.IntPtr,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopItemGiftRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="packageMainIndex">The package main index.</param>
+            <param name="category">The category.</param>
+            <param name="productMainIndex">The product main index.</param>
+            <param name="itemIndex">The item index.</param>
+            <param name="coinIndex">The coin index.</param>
+            <param name="mileageFlag">The mileage flag.</param>
+            <param name="giftReceiverName">The gift receiver name.</param>
+            <param name="giftText">The gift text.</param>
+            <remarks>
+            Is sent by the client when: The player wants to send a gift to another player.
+            Causes reaction on server side: The server buys the item with the credits of the player and sends it as gift to the other player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopStorageListRequest(System.Int32,System.UInt32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopStorageListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="pageIndex">The page index.</param>
+            <param name="inventoryType">The inventory type.</param>
+            <remarks>
+            Is sent by the client when: The player opened the cash shop dialog or used paging of the storage.
+            Causes reaction on server side: In case of opening, the server returns if the cash shop is available. If the player is in the safezone, it's not.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopDeleteStorageItemRequest(System.Int32,System.UInt32,System.UInt32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopDeleteStorageItemRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="baseItemCode">The base item code.</param>
+            <param name="mainItemCode">The main item code.</param>
+            <param name="productType">The product type.</param>
+            <remarks>
+            Is sent by the client when: The player wants to delete an item of the cash shop storage.
+            Causes reaction on server side: The server removes the item from cash shop storage.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopStorageItemConsumeRequest(System.Int32,System.UInt32,System.UInt32,System.UInt16,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopStorageItemConsumeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="baseItemCode">The base item code.</param>
+            <param name="mainItemCode">The main item code.</param>
+            <param name="itemIndex">The item index.</param>
+            <param name="productType">The product type.</param>
+            <remarks>
+            Is sent by the client when: The player wants to get or consume an item which is in the cash shop storage.
+            Causes reaction on server side: The item is applied or added to the inventory.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCashShopEventItemListRequest(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CashShopEventItemListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="categoryIndex">The category index.</param>
+            <remarks>
+            Is sent by the client when: When the player wants to see through the event item list.
+            Causes reaction on server side: The server sends a list with event items back.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendUnlockVault(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.UnlockVault" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="pin">The pin.</param>
+            <remarks>
+            Is sent by the client when: The player wants to unlock the protected vault with a pin.
+            Causes reaction on server side: The vault lock state on the server is updated. VaultProtectionInformation is sent as response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSetVaultPin(System.Int32,System.UInt16,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SetVaultPin" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="pin">The pin.</param>
+            <param name="password">The password of the account, which is required to set a new vault pin.</param>
+            <remarks>
+            Is sent by the client when: The player wants to set a new pin for the vault when it's in unlocked state.
+            Causes reaction on server side: The vault pin is set. VaultProtectionInformation is sent as response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRemoveVaultPin(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RemoveVaultPin" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="password">The password of the account, which is required to remove the vault pin.</param>
+            <remarks>
+            Is sent by the client when: The player wants to remove the pin for the vault when it's in unlocked state.
+            Causes reaction on server side: The vault pin is removed. VaultProtectionInformation is sent as response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendVaultClosed(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.VaultClosed" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player closed an opened vault dialog.
+            Causes reaction on server side: The state on the server is updated.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendVaultMoveMoneyRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.VaultMoveMoneyRequest.VaultMoneyMoveDirection,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.VaultMoveMoneyRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="direction">The direction.</param>
+            <param name="amount">The amount.</param>
+            <remarks>
+            Is sent by the client when: The player wants to move money from or to the vault storage.
+            Causes reaction on server side: The money is moved, if possible.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLahapJewelMixRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.LahapJewelMixRequest.MixType,MUnique.OpenMU.Network.Packets.ClientToServer.LahapJewelMixRequest.ItemType,MUnique.OpenMU.Network.Packets.ClientToServer.LahapJewelMixRequest.StackSize,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LahapJewelMixRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="operation">The operation.</param>
+            <param name="item">The item.</param>
+            <param name="mixingStackSize">The mixing stack size.</param>
+            <param name="unmixingSourceSlot">The unmixing source slot.</param>
+            <remarks>
+            Is sent by the client when: When a player has the Lahap npc dialog open and wants to combine or disband jewel stacks.
+            Causes reaction on server side: If successful, the inventory is updated and the game client gets corresponding responses.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPartyListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PartyListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: When the player opens the party menu in the game client.
+            Causes reaction on server side: If the player is in a party, the server sends back a list with information about all players of the party.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPartyPlayerKickRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PartyPlayerKickRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerIndex">The player index.</param>
+            <remarks>
+            Is sent by the client when: A party master wants to kick another player from his party, or when a player wants to kick himself from his party.
+            Causes reaction on server side: If the sending player is the party master, or the player wants to kick himself, the target player is removed from the party.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPartyInviteRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PartyInviteRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="targetPlayerId">The target player id.</param>
+            <remarks>
+            Is sent by the client when: A party master wants to invite another player to his party.
+            Causes reaction on server side: If the requesting player has no party, or is the party master, a request is sent to the target player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPartyInviteResponse(System.Int32,System.Byte,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PartyInviteResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="accepted">The accepted.</param>
+            <param name="requesterId">The requester id.</param>
+            <remarks>
+            Is sent by the client when: A player was invited by another player to join a party and this player sent the response back.
+            Causes reaction on server side: If the sender accepts the request, it's added to the party.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendWalkRequest(System.Int32,System.Byte,System.Byte,System.Byte,System.Byte,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.WalkRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="sourceX">The source x.</param>
+            <param name="sourceY">The source y.</param>
+            <param name="stepCount">The step count.</param>
+            <param name="targetRotation">The target rotation.</param>
+            <param name="directions">The directions of the walking path. The target is calculated by taking the source coordinates and applying the directions to it.</param>
+            <param name="directionsByteLength">The length of <paramref name="directions"/>.</param>
+            <remarks>
+            Is sent by the client when: A player wants to walk on the game map.
+            Causes reaction on server side: The player gets moved on the map, visible for other surrounding players.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendWalkRequest075(System.Int32,System.Byte,System.Byte,System.Byte,System.Byte,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.WalkRequest075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="sourceX">The source x.</param>
+            <param name="sourceY">The source y.</param>
+            <param name="stepCount">The step count.</param>
+            <param name="targetRotation">The target rotation.</param>
+            <param name="directions">The directions of the walking path. The target is calculated by taking the source coordinates and applying the directions to it.</param>
+            <param name="directionsByteLength">The length of <paramref name="directions"/>.</param>
+            <remarks>
+            Is sent by the client when: A player wants to walk on the game map.
+            Causes reaction on server side: The player gets moved on the map, visible for other surrounding players.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendInstantMoveRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.InstantMoveRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="targetX">The target x.</param>
+            <param name="targetY">The target y.</param>
+            <remarks>
+            Is sent by the client when: It's sent when the player performs specific skills.
+            Causes reaction on server side: Usually, the player is moved instantly to the specified coordinates on the current map. In OpenMU, this request is not handled, because it allows hackers to "teleport" to any coordinates.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAnimationRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.AnimationRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="animationNumber">The animation number.</param>
+            <remarks>
+            Is sent by the client when: A player does any kind of animation.
+            Causes reaction on server side: The animation number and rotation is forwarded to all surrounding players.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRequestCharacterList(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RequestCharacterList" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="language">The language.</param>
+            <remarks>
+            Is sent by the client when: After a successful login or after the player decided to leave the game world to go back to the character selection screen.
+            Causes reaction on server side: The server sends the character list with all available characters.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCreateCharacter(System.Int32,System.IntPtr,MUnique.OpenMU.Network.Packets.CharacterClassNumber)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CreateCharacter" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="name">The name of the character which should be created.</param>
+            <param name="class_">The character class of the character which should be created.</param>
+            <remarks>
+            Is sent by the client when: The game client is at the character selection screen and the player requests to add a new character.
+            Causes reaction on server side: The server checks if the player is allowed to create the character and sends a response back.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDeleteCharacter(System.Int32,System.IntPtr,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DeleteCharacter" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="name">The name of the character which should be deleted.</param>
+            <param name="securityCode">A security code (7 bytes long). Some game clients/servers also expect to transmit the account password (up to 20 bytes long) here. In OpenMU, we work with the security here, but are not limiting to a length of 7 bytes.</param>
+            <remarks>
+            Is sent by the client when: The game client is at the character selection screen and the player requests to delete an existing character.
+            Causes reaction on server side: The server checks if the player transmitted the correct security code and if the character actually exists. If all is valid, it deletes the character from the account. It then sends a response with a result code back to the game client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSelectCharacter(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SelectCharacter" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="name">The name of the character with which the player wants to join the game world</param>
+            <remarks>
+            Is sent by the client when: The player selects a character to enter the game world on the character selection screen.
+            Causes reaction on server side: The player joins the game world with the specified character.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendFocusCharacter(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.FocusCharacter" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="name">The name.</param>
+            <remarks>
+            Is sent by the client when: The player focuses (clicks on it) a character with which he plans to enter the game world on the character selection screen.
+            Causes reaction on server side: The server checks if this character exists and sends a response back. If successful, the game client highlights the focused character.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendIncreaseCharacterStatPoint(System.Int32,MUnique.OpenMU.Network.Packets.CharacterStatAttribute)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.IncreaseCharacterStatPoint" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="statType">The stat type.</param>
+            <remarks>
+            Is sent by the client when: The player decides to add a stat point to a specific stat type, by pressing a plus-button in the character info menu.
+            Causes reaction on server side: The server checks if a level-up-point is available. If yes, it adds the point to the specified stat type. It sends a response back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendInventoryRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.InventoryRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player bought or sold an item through his personal shop.
+            Causes reaction on server side: The server sends the inventory list back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendClientReadyAfterMapChange(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ClientReadyAfterMapChange" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: After the server sent a map change message and the client has initialized the game map visualization.
+            Causes reaction on server side: The character is added to the internal game map and ready to interact with other entities.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSaveKeyConfiguration(System.Int32,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SaveKeyConfiguration" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="configuration">The binary data of the key configuration</param>
+            <param name="configurationByteLength">The length of <paramref name="configuration"/>.</param>
+            <remarks>
+            Is sent by the client when: When leaving the game world with a character.
+            Causes reaction on server side: The server saves this configuration in its database.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAddMasterSkillPoint(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.AddMasterSkillPoint" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillId">The skill id.</param>
+            <remarks>
+            Is sent by the client when: The player wants to add or increase the level of a specific master skill of the master skill tree.
+            Causes reaction on server side: Adds or increases the master skill level of the specified skill, if the character is allowed to do that. A response is sent back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendHitRequest(System.Int32,System.UInt16,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.HitRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="targetId">The target id.</param>
+            <param name="attackAnimation">The attack animation.</param>
+            <param name="lookingDirection">The looking direction.</param>
+            <remarks>
+            Is sent by the client when: A player attacks a target without using a skill.
+            Causes reaction on server side: Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTargetedSkill(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TargetedSkill" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillId">The skill id.</param>
+            <param name="targetId">The target id.</param>
+            <remarks>
+            Is sent by the client when: A player performs a skill with a target, e.g. attacking or buffing.
+            Causes reaction on server side: Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTargetedSkill075(System.Int32,System.Byte,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TargetedSkill075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillIndex">The index of the skill in the skill list.</param>
+            <param name="targetId">The target id.</param>
+            <remarks>
+            Is sent by the client when: A player performs a skill with a target, e.g. attacking or buffing.
+            Causes reaction on server side: Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTargetedSkill095(System.Int32,System.Byte,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TargetedSkill095" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillIndex">The index of the skill in the skill list.</param>
+            <param name="targetId">The target id.</param>
+            <remarks>
+            Is sent by the client when: A player performs a skill with a target, e.g. attacking or buffing.
+            Causes reaction on server side: Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMagicEffectCancelRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MagicEffectCancelRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillId">The skill id.</param>
+            <param name="playerId">The player id.</param>
+            <remarks>
+            Is sent by the client when: A player cancels a specific magic effect of a skill, usually 'Infinity Arrow' and 'Wizardy Enhance'.
+            Causes reaction on server side: The effect is cancelled and an update is sent to the player and all surrounding players.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAreaSkill(System.Int32,System.UInt16,System.Byte,System.Byte,System.Byte,System.UInt16,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.AreaSkill" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillId">The skill id.</param>
+            <param name="targetX">The target x.</param>
+            <param name="targetY">The target y.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="extraTargetId">The extra target id.</param>
+            <param name="animationCounter">Animation counter which acts as a reference to the previously sent Area Skill Animation packet.</param>
+            <remarks>
+            Is sent by the client when: A player is performing an skill which affects an area of the map.
+            Causes reaction on server side: It's forwarded to all surrounding players, so that the animation is visible. In the original server implementation, no damage is done yet for attack skills - there are separate hit packets.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAreaSkill075(System.Int32,System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.AreaSkill075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillIndex">The index of the skill in the skill list.</param>
+            <param name="targetX">The target x.</param>
+            <param name="targetY">The target y.</param>
+            <param name="rotation">The rotation.</param>
+            <remarks>
+            Is sent by the client when: A player is performing an skill which affects an area of the map.
+            Causes reaction on server side: It's forwarded to all surrounding players, so that the animation is visible. In the original server implementation, no damage is done yet for attack skills - there are separate hit packets.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAreaSkill095(System.Int32,System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.AreaSkill095" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillIndex">The index of the skill in the skill list.</param>
+            <param name="targetX">The target x.</param>
+            <param name="targetY">The target y.</param>
+            <param name="rotation">The rotation.</param>
+            <remarks>
+            Is sent by the client when: A player is performing an skill which affects an area of the map.
+            Causes reaction on server side: It's forwarded to all surrounding players, so that the animation is visible. In the original server implementation, no damage is done yet for attack skills - there are separate hit packets.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRageAttackRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RageAttackRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillId">The skill id.</param>
+            <param name="targetId">The target id.</param>
+            <remarks>
+            Is sent by the client when: A player performs a skill with a target, e.g. attacking or buffing.
+            Causes reaction on server side: Damage is calculated and the target is hit, if the attack was successful. A response is sent back with the caused damage, and all surrounding players get an animation message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRageAttackRangeRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RageAttackRangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillId">The skill id.</param>
+            <param name="targetId">The target id.</param>
+            <remarks>
+            Is sent by the client when: A player (rage fighter) performs the dark side skill on a target.
+            Causes reaction on server side: The targets (up to 5) are determined and sent back to the player with the RageAttackRangeResponse.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTradeCancel(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TradeCancel" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player wants to cancel the trade.
+            Causes reaction on server side: The trade is cancelled and the previous inventory state is restored.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTradeButtonStateChange(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.TradeButtonState)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TradeButtonStateChange" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="newState">The new state.</param>
+            <remarks>
+            Is sent by the client when: The player presses the trade button.
+            Causes reaction on server side: The state change is forwarded to the trade partner. If both players press the trade button at the same time, the server will try to complete the trade by exchanging the items and money.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTradeRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TradeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerId">The player id.</param>
+            <remarks>
+            Is sent by the client when: The player requests to open a trade with another player.
+            Causes reaction on server side: The request is forwarded to the requested player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendTradeRequestResponse(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.TradeRequestResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="tradeAccepted">The trade accepted.</param>
+            <remarks>
+            Is sent by the client when: A requested player responded to a trade request of another player.
+            Causes reaction on server side: When the trade request was accepted, the server tries to open a new trade and sends corresponding responses to both players. 
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSetTradeMoney(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SetTradeMoney" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="amount">The amount.</param>
+            <remarks>
+            Is sent by the client when: A player requests to set an amount of money in the trade.
+            Causes reaction on server side: It's taken from the available money of the inventory. If the new money amount is lower than the amount which was set before, it's added back to the inventory. The trade partner is informed about any change.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLetterDeleteRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LetterDeleteRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="letterIndex">The letter index.</param>
+            <remarks>
+            Is sent by the client when: A player requests to delete a letter.
+            Causes reaction on server side: The letter is getting deleted.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLetterListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LetterListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The game client requests the current list of letters.
+            Causes reaction on server side: The server sends the list of available letters to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLetterSendRequest(System.Int32,System.UInt32,System.IntPtr,System.IntPtr,System.Byte,System.Byte,System.UInt16,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LetterSendRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="letterId">The letter id.</param>
+            <param name="receiver">The receiver.</param>
+            <param name="title">The title.</param>
+            <param name="rotation">The rotation.</param>
+            <param name="animation">The animation.</param>
+            <param name="messageLength">The message length.</param>
+            <param name="message">The message.</param>
+            <remarks>
+            Is sent by the client when: A player wants to send a letter to another players character.
+            Causes reaction on server side: The letter is sent to the other character, if it exists and the player has the required money.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLetterReadRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LetterReadRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="letterIndex">The letter index.</param>
+            <remarks>
+            Is sent by the client when: A player requests to read a specific letter of his letter list.
+            Causes reaction on server side: The server sends the requested letter content back to the game client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildKickPlayerRequest(System.Int32,System.IntPtr,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildKickPlayerRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerName">The player name.</param>
+            <param name="securityCode">The security code.</param>
+            <remarks>
+            Is sent by the client when: A guild member wants to kick himself or a guild master wants to kick another player from its guild.
+            Causes reaction on server side: If the player is allowed to kick the player, it's removed from the guild. If the guild master kicks himself, the guild is disbanded. Corresponding responses are sent to all involved players.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildJoinRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildJoinRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="guildMasterPlayerId">The guild master player id.</param>
+            <remarks>
+            Is sent by the client when: A player (non-guild member) requests to join a guild.
+            Causes reaction on server side: The request is forwarded to the guild master. There can only be one request at a time. If the guild master already has an open request, a corresponding response is directly sent back to the requesting player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildJoinResponse(System.Int32,System.Byte,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildJoinResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="accepted">The accepted.</param>
+            <param name="requesterId">The requester id.</param>
+            <remarks>
+            Is sent by the client when: A guild master responded to a previously sent request.
+            Causes reaction on server side: If the request was accepted by the guild master, the previously requesting player is added to the guild.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A guild player opens its guild menu in the game client.
+            Causes reaction on server side: A list of all guild members and their state is sent back as response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildCreateRequest(System.Int32,System.IntPtr,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildCreateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="guildName">The guild name.</param>
+            <param name="guildEmblem">The guild emblem in a custom bitmap format. It supports 16 colors (one transparent) per pixel and has a size of 8 * 8 pixel.</param>
+            <param name="guildEmblemByteLength">The length of <paramref name="guildEmblem"/>.</param>
+            <remarks>
+            Is sent by the client when: When a player wants to create a guild.
+            Causes reaction on server side: The guild is created and the player is set as the new guild master of the guild.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildCreateRequest075(System.Int32,System.IntPtr,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildCreateRequest075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="guildName">The guild name.</param>
+            <param name="guildEmblem">The guild emblem in a custom bitmap format. It supports 16 colors (one transparent) per pixel and has a size of 8 * 8 pixel.</param>
+            <param name="guildEmblemByteLength">The length of <paramref name="guildEmblem"/>.</param>
+            <remarks>
+            Is sent by the client when: When a player wants to create a guild.
+            Causes reaction on server side: The guild is created and the player is set as the new guild master of the guild.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildMasterAnswer(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildMasterAnswer" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="showCreationDialog">A value whether the guild creation dialog should be shown. Otherwise, the guild creation is cancelled and the dialog was closed.</param>
+            <remarks>
+            Is sent by the client when: The player has the dialog of the guild master NPC opened and decided about its next step.
+            Causes reaction on server side: It either cancels the guild creation or proceeds with the guild creation dialog where the player can enter the guild name and symbol.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCancelGuildCreation(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CancelGuildCreation" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player has the dialog of the guild creation dialog opened and decided against creating a guild.
+            Causes reaction on server side: It either cancels the guild creation.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildWarResponse(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildWarResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="accepted">The accepted.</param>
+            <remarks>
+            Is sent by the client when: A guild master requested a guild war against another guild.
+            Causes reaction on server side: If the guild master confirms, the war is declared.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildInfoRequest(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="guildId">The guild id.</param>
+            <remarks>
+            Is sent by the client when: A player gets another player into view range which is in a guild, and the guild identifier is unknown (=not cached yet by previous requests) to him.
+            Causes reaction on server side: The server sends a response which includes the guild name and emblem.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildRoleAssignRequest(System.Int32,MUnique.OpenMU.Network.Packets.ServerToClient.GuildMemberRole,System.IntPtr,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildRoleAssignRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="role">The role.</param>
+            <param name="playerName">The player name.</param>
+            <param name="type">Unknown value between 1 and 3.</param>
+            <remarks>
+            Is sent by the client when: A guild master wants to change the role of a guild member.
+            Causes reaction on server side: The server changes the role of the guild member.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildTypeChangeRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildTypeChangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="guildType">0 = Common, 1 = Guard, FF = None.</param>
+            <remarks>
+            Is sent by the client when: A guild master wants to change the type of its guild. Didn't find any place in the client where this is sent.
+            Causes reaction on server side: The server changes the kind of the guild. We assume it's whether the guild should be the main guild of an alliance, or not. Shouldn't be handled, because this is constant for the lifetime of an alliance.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildRelationshipChangeRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.GuildRelationshipType,MUnique.OpenMU.Network.Packets.ClientToServer.GuildRequestType,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildRelationshipChangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="relationshipType">The relationship type.</param>
+            <param name="requestType">The request type.</param>
+            <param name="targetPlayerId">The target player id.</param>
+            <remarks>
+            Is sent by the client when: A guild master sends a request to another guild master about changing the relationship between their guilds.
+            Causes reaction on server side: The server sends a response with the result.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGuildRelationshipChangeResponse(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.GuildRelationshipType,MUnique.OpenMU.Network.Packets.ClientToServer.GuildRequestType,System.Byte,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GuildRelationshipChangeResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="relationshipType">The relationship type.</param>
+            <param name="requestType">The request type.</param>
+            <param name="response">The response.</param>
+            <param name="targetPlayerId">The target player id.</param>
+            <remarks>
+            Is sent by the client when: A guild master answered the request to another guild master about changing the relationship between their guilds.
+            Causes reaction on server side: The server sends a response back to the requester. If the guild master agreed, it takes the necessary actions.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRequestAllianceList(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RequestAllianceList" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player opens the alliance list dialog.
+            Causes reaction on server side: The server answers with the list of the guilds of the alliance.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendRemoveAllianceGuildRequest(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.RemoveAllianceGuildRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="guildName">The guild name.</param>
+            <remarks>
+            Is sent by the client when: An alliance guild master wants to remove a guild from the alliance.
+            Causes reaction on server side: The server removes the guild from the alliance.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPingResponse(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PingResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: After the server sent a ping request.
+            Causes reaction on server side: The server knows the latency between server and client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendItemRepair(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ItemRepair" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="inventoryItemSlot">The inventory slot of the target item. If it's 0xFF, the player requests to repair all items with the help of an NPC. If it's 8 (Pet slot), using the pet trainer NPC is mandatory, too.</param>
+            <remarks>
+            Is sent by the client when: A player wants to repair an item of his inventory, either himself or with the usage of an NPC.
+            Causes reaction on server side: If the item is damaged and repairable, the durability of the item is maximized and corresponding responses are sent back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChaosMachineMixRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.ChaosMachineMixRequest.ChaosMachineMixType,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ChaosMachineMixRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="mixType">The identifier which tells the server which kind of mix should be executed.</param>
+            <param name="socketSlot">The 0-based slot index of the socket at which a seed sphere should be mounted or removed. May only be available for the corresponding mixes, so access with care.</param>
+            <remarks>
+            Is sent by the client when: The player has the dialog of the chaos machine open and decided to mix (craft) the items which he put into the chaos machine dialog.
+            Causes reaction on server side: Based on the type of mix and it's corresponding success rate, the mix succeeds or fails. The client gets a corresponding response with the created, changed or lost items.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendCraftingDialogCloseRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.CraftingDialogCloseRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player closes the dialog which was opened by an interaction with the chaos machine goblin.
+            Causes reaction on server side: The server updates the state of the player accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendFriendListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.FriendListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The client requests the current friend list.
+            Causes reaction on server side: The server sends the friend list to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendFriendAddRequest(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.FriendAddRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="friendName">The friend name.</param>
+            <remarks>
+            Is sent by the client when: A player wants to add another players character into his friend list of the messenger.
+            Causes reaction on server side: A request is sent to the other player. If the player is currently offline, the request will be sent as soon as he is online again.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendFriendDelete(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.FriendDelete" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="friendName">The friend name.</param>
+            <remarks>
+            Is sent by the client when: A player wants to delete another players character from his friend list of the messenger.
+            Causes reaction on server side: The entry in the friend list is removed. The player is shown as offline in the other players friends list.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChatRoomCreateRequest(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ChatRoomCreateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="friendName">The friend name.</param>
+            <remarks>
+            Is sent by the client when: A player wants to open a chat with another player of his friend list.
+            Causes reaction on server side: If both players are online, a chat room is created on the chat server. Authentication data is sent to both game clients, which will then try to connect to the chat server using this data.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendFriendAddResponse(System.Int32,System.Byte,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.FriendAddResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="accepted">The accepted.</param>
+            <param name="friendRequesterName">The friend requester name.</param>
+            <remarks>
+            Is sent by the client when: A player received a friend request from another player and responded to it.
+            Causes reaction on server side: If the player accepted, the friend is added to the players friend list and both players get subscribed about each others online status.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendSetFriendOnlineState(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.SetFriendOnlineState" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="onlineState">The online state.</param>
+            <remarks>
+            Is sent by the client when: A player wants to set himself on- or offline.
+            Causes reaction on server side: Depending on the state, the player is shown as offline or online in all friend lists of his friends.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChatRoomInvitationRequest(System.Int32,System.IntPtr,System.UInt16,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ChatRoomInvitationRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="friendName">The friend name.</param>
+            <param name="roomId">The room id.</param>
+            <param name="requestId">The request id.</param>
+            <remarks>
+            Is sent by the client when: A player wants to invite additional players from his friend list to an existing chat room.
+            Causes reaction on server side: The player additional gets authentication data sent to his game client. It then connects to the chat server and joins the chat room.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLegacyQuestStateRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LegacyQuestStateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: After the player entered the game world with a character.
+            Causes reaction on server side: The quest state is sent back as response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLegacyQuestStateSetRequest(System.Int32,System.Byte,MUnique.OpenMU.Network.Packets.LegacyQuestState)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LegacyQuestStateSetRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="newState">The new state.</param>
+            <remarks>
+            Is sent by the client when: The player wants to change the state of a quest, e.g. to start or to finish a quest.
+            Causes reaction on server side: Depending on the requested new state, a response is sent back.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPetCommandRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.PetType,MUnique.OpenMU.Network.Packets.ClientToServer.PetCommandMode,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PetCommandRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="petType">The pet type.</param>
+            <param name="commandMode">The command mode.</param>
+            <param name="targetId">The target id.</param>
+            <remarks>
+            Is sent by the client when: The player wants to command its equipped pet (raven).
+            Causes reaction on server side: 
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPetInfoRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.PetType,MUnique.OpenMU.Network.Packets.ClientToServer.StorageType,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.PetInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="pet">The pet.</param>
+            <param name="storage">The storage.</param>
+            <param name="itemSlot">The item slot.</param>
+            <remarks>
+            Is sent by the client when: The player hovers over a pet. The client sends this request to retrieve information (level, experience) of the pet (dark raven, horse).
+            Causes reaction on server side: The server sends a PetInfoResponse.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendIllusionTempleEnterRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.IllusionTempleEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="mapNumber">The map number.</param>
+            <param name="itemSlot">The item slot.</param>
+            <remarks>
+            Is sent by the client when: The client has the NPC dialog for the illusion temple opened, and wants to enter the event map.
+            Causes reaction on server side: The server checks if the player has the required ticket and moves the player to the event map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendIllusionTempleSkillRequest(System.Int32,System.UInt16,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.IllusionTempleSkillRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="skillNumber">The skill number.</param>
+            <param name="targetObjectIndex">The target object index.</param>
+            <param name="distance">The distance.</param>
+            <remarks>
+            Is sent by the client when: The player is in the illusion temple event and wants to perform a special skill (210 - 213), Order of Protection, Restraint, Tracking or Weaken.
+            Causes reaction on server side: The server checks if the player is inside the event etc. and performs the skills accordingly.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendIllusionTempleRewardRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.IllusionTempleRewardRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player requests the reward of the event.
+            Causes reaction on server side: The server checks if the player is in the winning game and returns a reward, usually as item drop.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLuckyCoinCountRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LuckyCoinCountRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player has the lucky coin dialog open and requests the current count of the registered coins.
+            Causes reaction on server side: The server returns the count of the registered coins.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLuckyCoinRegistrationRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LuckyCoinRegistrationRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player has the lucky coin dialog open and requests to register one lucky coin, which is in his inventory.
+            Causes reaction on server side: The server returns the result of the registration increases the coin count and decreases the coin durability by one.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLuckyCoinExchangeRequest(System.Int32,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LuckyCoinExchangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="coinCount">The coin count.</param>
+            <remarks>
+            Is sent by the client when: The player has the lucky coin dialog open and requests an exchange for the specified number of registered coins.
+            Causes reaction on server side: The server adds an item to the inventory of the character and sends a response with a result code.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDoppelgangerEnterRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DoppelgangerEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="ticketItemSlot">The ticket item slot.</param>
+            <remarks>
+            Is sent by the client when: The player wants to enter the doppelganger event.
+            Causes reaction on server side: The server checks the event ticket and moves the player to the event map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEnterMarketPlaceRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EnterMarketPlaceRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player wants to enter the market place map.
+            Causes reaction on server side: The server moves the player to the market place map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMuHelperStatusChangeRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MuHelperStatusChangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="pauseStatus">The pause status.</param>
+            <remarks>
+            Is sent by the client when: The client clicked on MU Helper play or pause button.
+            Causes reaction on server side: The server validates, if user can use the helper and sends the status back.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMuHelperSaveDataRequest(System.Int32,System.Byte*,System.UInt32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MuHelperSaveDataRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="helperData">The helper data.</param>
+            <param name="helperDataByteLength">The length of <paramref name="helperData"/>.</param>
+            <remarks>
+            Is sent by the client when: The client want to save current MU Helper data.
+            Causes reaction on server side: The server should save supplied MU Helper data.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendQuestSelectRequest(System.Int32,System.UInt16,System.UInt16,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.QuestSelectRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="questGroup">The quest group.</param>
+            <param name="selectedTextIndex">A 1-based index of the selected index in the dialog. It's 0 when no text has been selected. It's not clear yet, when we need that.</param>
+            <remarks>
+            Is sent by the client when: The client opened an quest NPC dialog and selected an available quests.
+            Causes reaction on server side: If the quest is already active, it responds with the QuestProgress. If the quest is inactive, the server decides if the character can start the quest and responds with a QuestStepInfo with the StartingNumber. A character can run up to 3 concurrent quests at a time.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendQuestProceedRequest(System.Int32,System.UInt16,System.UInt16,MUnique.OpenMU.Network.Packets.ClientToServer.QuestProceedRequest.QuestProceedAction)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.QuestProceedRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="questGroup">The quest group.</param>
+            <param name="proceedAction">The proceed action.</param>
+            <remarks>
+            Is sent by the client when: After the server started a quest (and sent a F60B message) the game client requests to proceed with the quest.
+            Causes reaction on server side: The quest state is set accordingly on the server. The next response seems to depend on the quest configuration. Depending on the action of the next quest state, the server will send either a quest progress message (F60C) or again a quest start message (F60B).
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendQuestCompletionRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.QuestCompletionRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="questGroup">The quest group.</param>
+            <remarks>
+            Is sent by the client when: The game client requests to complete an active quest.
+            Causes reaction on server side: The server checks the conditions to complete the quest. If this fails, nothing happens. If all conditions are met, the reward is given to the player and the quest state is set accordingly, so that the player can select to start the next quest. Additionally, the quest completion response message (F60D) is sent to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendQuestCancelRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.QuestCancelRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="questGroup">The quest group.</param>
+            <remarks>
+            Is sent by the client when: The game client requests to cancel an active quest.
+            Causes reaction on server side: The server checks if the quest is currently in progress. In this case, the quest state is reset and a response (F60F) is sent back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendQuestClientActionRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.QuestClientActionRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="questGroup">The quest group.</param>
+            <remarks>
+            Is sent by the client when: The game client requests to complete a client action, e.g. completing a tutorial.
+            Causes reaction on server side: The server checks if the specified quest is currently in progress. If the quest got a Condition (condition type 0x10) for this flag, the condition is flagged as fulfilled.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendActiveQuestListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ActiveQuestListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The clients requests the states of all quests, usually after entering the game.
+            Causes reaction on server side: The list of active quests is sent back (F61A) without changing any state. This list just contains all running or completed quests for each group.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendQuestStateRequest(System.Int32,System.UInt16,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.QuestStateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="questNumber">The quest number.</param>
+            <param name="questGroup">The quest group.</param>
+            <remarks>
+            Is sent by the client when: The game client requests the state of a specific active quests.
+            Causes reaction on server side: The quest state is sent back (F61B) without changing any state, if the quest is currently in progress.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEventQuestStateListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EventQuestStateListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The game client requests the list of event quests, usually after entering the game.
+            Causes reaction on server side: The server may answer with a response which seems to depend if the character is member of a Gen or not. If it's not in a gen, it sends a response (F603).
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendAvailableQuestsRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.AvailableQuestsRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The client opened an quest NPC dialog and requests a list of available quests.
+            Causes reaction on server side: The list of available quests of this NPC is sent back (F60A).
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendNpcBuffRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.NpcBuffRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The game client requests to get a buff from the currently interacting quest npc. As far as we know, only the Elf Soldier NPC offers such a buff until a certain character level (150 or 220).
+            Causes reaction on server side: The server should check if the correct Quest NPC (e.g. Elf Soldier) dialog is opened and the player didn't reach the level limit yet. If that's both the case, it adds a defined buff (MagicEffect) to the player; Otherwise, a message is sent to the player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEnterEmpireGuardianEvent(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EnterEmpireGuardianEvent" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="itemSlot">The item slot of the event ticket. Not used by the server.</param>
+            <remarks>
+            Is sent by the client when: The player wants to enter the empire guardian event due an npc dialog.
+            Causes reaction on server side: The checks if the player can enter the event, and moves it to the event, if possible.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGensJoinRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.GensType)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GensJoinRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="gensType">The gens type.</param>
+            <remarks>
+            Is sent by the client when: The player has opened one of the gens NPCs and requests to join it.
+            Causes reaction on server side: The server checks if the player is not in a gens already and joins the player to the selected gens.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGensLeaveRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GensLeaveRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player wants to leave the current gens.
+            Causes reaction on server side: The server the player from the gens.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGensRewardRequest(System.Int32,MUnique.OpenMU.Network.Packets.ClientToServer.GensType)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GensRewardRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="gensType">The gens type.</param>
+            <remarks>
+            Is sent by the client when: The game client requests to get a reward from the gens npc.
+            Causes reaction on server side: The server checks if the player has enough points to get the reward, and sends a response.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendGensRankingRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.GensRankingRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The game client requests information about the current gens ranking.
+            Causes reaction on server side: The server returns the current gens rankinginformation.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDevilSquareEnterRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DevilSquareEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="squareLevel">The level of the devil square, minus 1.</param>
+            <param name="ticketItemInventoryIndex">The index of the ticket item in the inventory. Be aware, that the value is 12 higher than it should be - it makes no sense, but it is what it is...</param>
+            <remarks>
+            Is sent by the client when: The player requests to enter the devil square through the Charon NPC.
+            Causes reaction on server side: The server checks if the player can enter the event and sends a response (Code 0x90) back to the client. If it was successful, the character gets moved to the event map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMiniGameOpeningStateRequest(System.Int32,MUnique.OpenMU.Network.Packets.MiniGameType,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MiniGameOpeningStateRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="eventType">The event type.</param>
+            <param name="eventLevel">The event level.</param>
+            <remarks>
+            Is sent by the client when: The player requests to get the remaining time of the currently entered event.
+            Causes reaction on server side: The remaining time is sent back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEventChipRegistrationRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EventChipRegistrationRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="type">The type.</param>
+            <param name="itemIndex">The item index.</param>
+            <remarks>
+            Is sent by the client when: The player registers an event item at an NPC, usually the golden archer.
+            Causes reaction on server side: A response is sent back to the client with the current event chip count.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMutoNumberRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MutoNumberRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player requests information about the Muto number. Unused.
+            Causes reaction on server side: A response is sent back to the client with the current Muto number.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEventChipExitDialog(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EventChipExitDialog" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: The player requests to close the event chip dialog.
+            Causes reaction on server side: The event chip dialog will be closed.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendEventChipExchangeRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.EventChipExchangeRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="type">The type.</param>
+            <remarks>
+            Is sent by the client when: The player requests to exchange the event chips to something else.
+            Causes reaction on server side: A response is sent back to the client with the exchange result.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendServerImmigrationRequest(System.Int32,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ServerImmigrationRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="securityCode">The security code.</param>
+            <remarks>
+            Is sent by the client when: Unknown?
+            Causes reaction on server side: Unknown?
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendLuckyNumberRequest(System.Int32,System.IntPtr,System.IntPtr,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.LuckyNumberRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="serial1">The serial 1.</param>
+            <param name="serial2">The serial 2.</param>
+            <param name="serial3">The serial 3.</param>
+            <remarks>
+            Is sent by the client when: The player requests to redeem a coupon code (lucky number) which is 12 alphanumeric digits long.
+            Causes reaction on server side: A response is sent back to the client with the result. An item could be rewarded to the inventory.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendBloodCastleEnterRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.BloodCastleEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="castleLevel">The level of the battle square.</param>
+            <param name="ticketItemInventoryIndex">The index of the ticket item in the inventory. Be aware, that the value is 12 higher than it should be - it makes no sense, but it is what it is...</param>
+            <remarks>
+            Is sent by the client when: The player requests to enter the blood castle through the Archangel Messenger NPC.
+            Causes reaction on server side: The server checks if the player can enter the event and sends a response (Code 0x9A) back to the client. If it was successful, the character gets moved to the event map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendMiniGameEventCountRequest(System.Int32,MUnique.OpenMU.Network.Packets.MiniGameType)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.MiniGameEventCountRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="miniGame">The mini game.</param>
+            <remarks>
+            Is sent by the client when: The player requests to get the entering count of the specified mini game.
+            Causes reaction on server side: The remaining time is sent back to the client. However, it's not really handled on the known server sources.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChaosCastleEnterRequest(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ChaosCastleEnterRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="castleLevel">The level of the chaos castle. Appears to always be 0.</param>
+            <param name="ticketItemInventoryIndex">The index of the ticket item in the inventory.</param>
+            <remarks>
+            Is sent by the client when: The player requests to enter the chaos castle by using the 'Armor of Guardsman' item.
+            Causes reaction on server side: The server checks if the player can enter the event and sends a response (Code 0xAF) back to the client. If it was successful, the character gets moved to the event map.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendChaosCastlePositionSet(System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.ChaosCastlePositionSet" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="positionX">The position x.</param>
+            <param name="positionY">The position y.</param>
+            <remarks>
+            Is sent by the client when: The game client noticed, that the coordinates of the player is not on the ground anymore. It requests to set the specified coordinates.
+            Causes reaction on server side: The server sets the player on the new coordinates. Not handled on OpenMU.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDuelStartRequest(System.Int32,System.UInt16,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DuelStartRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="playerId">The player id.</param>
+            <param name="playerName">The player name.</param>
+            <remarks>
+            Is sent by the client when: The player requests to start a duel with another player.
+            Causes reaction on server side: The server sends a request to the other player.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDuelStartResponse(System.Int32,System.Byte,System.UInt16,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DuelStartResponse" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="response">The response.</param>
+            <param name="playerId">The player id.</param>
+            <param name="playerName">The player name.</param>
+            <remarks>
+            Is sent by the client when: A player requested to start a duel with the sending player.
+            Causes reaction on server side: Depending on the response, the server starts the duel, or not.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDuelStopRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DuelStopRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player requested to stop the duel.
+            Causes reaction on server side: The server stops the duel.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDuelChannelJoinRequest(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DuelChannelJoinRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="channelId">The channel id.</param>
+            <remarks>
+            Is sent by the client when: A player requested to join the duel as a spectator.
+            Causes reaction on server side: The server will add the player as spectator.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendDuelChannelQuitRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ClientToServer.DuelChannelQuitRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: A player requested to quit the duel as a spectator.
+            Causes reaction on server side: The server will remove the player as spectator.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendConnectionInfoRequest075(System.Int32,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.ConnectionInfoRequest075" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="serverId">The server id.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client after the user clicked on an entry of the server list.
+            Causes reaction on server side: The server will send a ConnectionInfo back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendConnectionInfoRequest(System.Int32,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.ConnectionInfoRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="serverId">The server id.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client after the user clicked on an entry of the server list.
+            Causes reaction on server side: The server will send a ConnectionInfo back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendConnectionInfo(System.Int32,System.IntPtr,System.UInt16)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.ConnectionInfo" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="ipAddress">The ip address.</param>
+            <param name="port">The port.</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after the client requested the connection information of a server. This happens after the user clicked on a server.
+            Causes reaction on client side: The client will try to connect to the server with the specified information.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendServerListRequest(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.ServerListRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client after it connected and received the 'Hello' message.
+            Causes reaction on server side: The server will send a ServerListResponse back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendServerListRequestOld(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.ServerListRequestOld" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client (below season 1) after it connected and received the 'Hello' message.
+            Causes reaction on server side: The server will send a ServerListResponseOld back to the client.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendHello(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.Hello" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after the client connected to the server.
+            Causes reaction on client side: A game client will request the server list. The launcher would request the patch state.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPatchCheckRequest(System.Int32,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.PatchCheckRequest" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="majorVersion">The major version.</param>
+            <param name="minorVersion">The minor version.</param>
+            <param name="patchVersion">The patch version.</param>
+            <remarks>
+            Is sent by the client when: This packet is sent by the client (launcher) to check if the patch version is high enough to be able to connect to the server.
+            Causes reaction on server side: The connect server will check the version and sends a 'PatchVersionOkay' or a 'ClientNeedsPatch' message.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendPatchVersionOkay(System.Int32)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.PatchVersionOkay" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after the client (launcher) requested the to check the patch version and it was high enough.
+            Causes reaction on client side: The launcher will activate its start button.
+            </remarks>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.SendClientNeedsPatch(System.Int32,System.Byte,System.IntPtr)">
+            <summary>
+            Sends a <see cref="T:MUnique.OpenMU.Network.Packets.ConnectServer.ClientNeedsPatch" /> to this connection.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="patchVersion">The patch version.</param>
+            <param name="patchAddress">The patch address, usually to a ftp server. The address is usually "encrypted" with the 3-byte XOR key (FC CF AB).</param>
+            <remarks>
+            Is sent by the server when: This packet is sent by the server after the client (launcher) requested to check the patch version and it requires an update.
+            Causes reaction on client side: The launcher will download the required patches and then activate the start button.
+            </remarks>
+        </member>
+        <member name="F:MUnique.Client.Library.ConnectionManager.Connections">
+            <summary>
+            The currently active connections, with their handle as key.
+            </summary>
+        </member>
+        <member name="F:MUnique.Client.Library.ConnectionManager._maxHandle">
+            <summary>
+            The currently used maximum handle number.
+            </summary>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.Connect(System.IntPtr,System.Int32,System.Byte,,)">
+            <summary>
+            Connects the specified host and port.
+            </summary>
+            <param name="hostPtr">The pointer to a string which contains the host (ip or hostname).</param>
+            <param name="port">The port.</param>
+            <param name="isEncrypted">
+            A flag, if the connection is supposed to be encrypted.
+            This is usually <c>1</c> for connections to the game server, but <c>0</c> for connections to the connect server.
+            </param>
+            <param name="onPacketReceived">The pointer to an unmanaged method which is called when a new packet got received.
+            Parameters: handle, size, pointer to the data.</param>
+            <param name="onDisconnected">The pointer to an unmanaged method which is called when the connection got disconnected.
+            Parameter: handle.</param>
+            <returns>
+            The handle of the created connection. If negative, the connection couldn't be established.
+            </returns>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.Send(System.Int32,System.Byte*,System.Int32)">
+            <summary>
+            Sends a packet over the connection of the specified handle.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="data">The pointer to the packet data.</param>
+            <param name="count">The count of bytes which should be sent.</param>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.BeginReceive(System.Int32)">
+            <summary>
+            Begins receiving data for the connection of the specified handle.
+            </summary>
+            <param name="connectionHandle">The handle of the connection.</param>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionManager.Disconnect(System.Int32)">
+            <summary>
+            Disconnects the connection of the specified handle.
+            </summary>
+            <param name="connectionHandle">The handle of the connection.</param>
+        </member>
+        <member name="T:MUnique.Client.Library.ConnectionWrapper">
+            <summary>
+            A wrapper for a <see cref="T:MUnique.OpenMU.Network.Connection"/>.
+            </summary>
+        </member>
+        <member name="F:MUnique.Client.Library.ConnectionWrapper._onPacketReceived">
+            <summary>
+            The unmanaged callback to a packet handler. Parameters:
+              - handle
+              - packet size
+              - pointer to packet.
+            </summary>
+        </member>
+        <member name="F:MUnique.Client.Library.ConnectionWrapper._onDisconnected">
+            <summary>
+            The unmanaged callback to a disconnect handler. Parameter: handle.
+            </summary>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionWrapper.#ctor(System.Int32,MUnique.OpenMU.Network.Connection,,)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.Client.Library.ConnectionWrapper"/> class.
+            </summary>
+            <param name="handle">The handle of the connection.</param>
+            <param name="connection">The connection.</param>
+            <param name="onPacketReceived">
+            The pointer to an unmanaged method which is called when a new packet got received.
+            Parameters: handle, size, pointer to the data.
+            </param>
+            <param name="onDisconnected">
+            The pointer to an unmanaged method which is called when the connection got disconnected.
+            Parameter: handle.
+            </param>
+        </member>
+        <member name="P:MUnique.Client.Library.ConnectionWrapper.Output">
+            <summary>
+            Gets the output pipe writer.
+            </summary>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionWrapper.BeginReceive">
+            <summary>
+            Begins receiving packets from the client.
+            </summary>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionWrapper.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionWrapper.DisconnectAndDispose">
+            <summary>
+            Disconnects the connection.
+            </summary>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionWrapper.Send(System.Span{System.Byte})">
+            <summary>
+            Sends the specified bytes.
+            </summary>
+            <param name="bytes">The bytes.</param>
+        </member>
+        <member name="M:MUnique.Client.Library.ConnectionWrapper.CreateAndSend(System.Func{System.IO.Pipelines.PipeWriter,System.Int32})">
+            <summary>
+            Sends the specified bytes.
+            </summary>
+            <param name="packetFactory">The factory which creates the packet and returns the length of it.</param>
+        </member>
+    </members>
+</doc>

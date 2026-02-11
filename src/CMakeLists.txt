@@ -283,7 +283,7 @@ if (DOTNET_EXECUTABLE)
   # Native AOT cannot cross-compile across OS boundaries.  A Linux dotnet
   # targeting win-x86/win-x64 will fail.  Only proceed when we have a Windows
   # dotnet.exe (native or via WSL interop).
-  if (NOT DOTNET_EXECUTABLE MATCHES "\\.exe$" AND CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  if (NOT DOTNET_EXECUTABLE MATCHES "\\.exe$" AND WIN32)
     message(WARNING "Found Linux dotnet but target is Windows. "
       "Cross-OS Native AOT is not supported. MUnique.Client.Library.dll will NOT be built. "
       "Install the Windows .NET SDK or use WSL interop (dotnet.exe) to enable.")
@@ -358,7 +358,7 @@ if (DOTNET_EXECUTABLE)
                   "DOTNET_CLI_HOME=${DOTNET_TEMP_DIR_NATIVE}"
                   "TEMP=${DOTNET_TEMP_DIR_NATIVE}"
                   "TMP=${DOTNET_TEMP_DIR_NATIVE}"
-                  "${DOTNET_EXECUTABLE}" publish "${DOTNET_PROJ_NATIVE}" -c $<CONFIG> -r ${DOTNET_RID} -p:PlatformTarget=${DOTNET_PLATFORM} -o "${DOTNET_TEMP_OUTPUT_NATIVE}" --nologo
+                  "${DOTNET_EXECUTABLE}" publish "${DOTNET_PROJ_NATIVE}" -c $<CONFIG> -r ${DOTNET_RID} -p:PlatformTarget=${DOTNET_PLATFORM} -p:PublishAot=true -p:NativeLib=Shared -p:SelfContained=true -o "${DOTNET_TEMP_OUTPUT_NATIVE}" --nologo
           COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DOTNET_TEMP_OUTPUT}/MUnique.Client.Library.dll" "${DOTNET_DLL_PATH}"
           DEPENDS "${DOTNET_PROJ}" ${DOTNET_SOURCES}
           COMMENT "Checking for .NET Client Library updates..."
