@@ -212,6 +212,31 @@ static void LogSkippedLegacyPacket(int headCode, int subcode)
     g_ConsoleDebug->Write(MCD_NORMAL, L"Skipping Season 6 packet [0x%02X][0x%02X] on legacy server", headCode, subcode);
 }
 
+static void LogServerCapabilities()
+{
+    const int v0 = IsVersionDigit(g_ServerVersionBytes[0]) ? g_ServerVersionBytes[0] - '0' : 0;
+    const int v1 = IsVersionDigit(g_ServerVersionBytes[1]) ? g_ServerVersionBytes[1] - '0' : 0;
+    const int v2 = IsVersionDigit(g_ServerVersionBytes[2]) ? g_ServerVersionBytes[2] - '0' : 0;
+    const int v3 = IsVersionDigit(g_ServerVersionBytes[3]) ? g_ServerVersionBytes[3] - '0' : 0;
+    const int v4 = IsVersionDigit(g_ServerVersionBytes[4]) ? g_ServerVersionBytes[4] - '0' : 0;
+
+    g_ConsoleDebug->Write(MCD_NORMAL, L"=================================");
+    g_ConsoleDebug->Write(MCD_NORMAL, L"Server Version: %d.%d.%d.%d.%d", v0, v1, v2, v3, v4);
+    g_ConsoleDebug->Write(MCD_NORMAL, L"Season 6 Features: %ls", g_bServerSupportsSeason6 ? L"ENABLED" : L"DISABLED");
+
+    if (!g_bServerSupportsSeason6)
+    {
+        g_ConsoleDebug->Write(MCD_NORMAL, L"Disabled Features:");
+        g_ConsoleDebug->Write(MCD_NORMAL, L"  - Master Level System");
+        g_ConsoleDebug->Write(MCD_NORMAL, L"  - Combo/Monk Skill Extensions");
+        g_ConsoleDebug->Write(MCD_NORMAL, L"  - Socket Item Options");
+        g_ConsoleDebug->Write(MCD_NORMAL, L"  - Harmony Item Options");
+        g_ConsoleDebug->Write(MCD_NORMAL, L"  - Ancient Set Option Rendering");
+    }
+
+    g_ConsoleDebug->Write(MCD_NORMAL, L"=================================");
+}
+
 int DirTable[16] = { -1,-1,  0,-1,  1,-1,  1,0,  1,1,  0,1,  -1,1,  -1,0 };
 
 wchar_t    Password[MAX_USERNAME_SIZE + 1];
@@ -428,6 +453,7 @@ void ReceiveJoinServer(const BYTE* ReceiveBuffer)
             rUIMng.ShowWin(&rUIMng.m_LoginWin);
             HeroKey = ((int)(Data2->NumberH) << 8) + Data2->NumberL;
             CurrentProtocolState = RECEIVE_JOIN_SERVER_SUCCESS;
+            LogServerCapabilities();
             break;
 
         default:
