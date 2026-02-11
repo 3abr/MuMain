@@ -202,6 +202,16 @@ static void OnServerHandshake(const BYTE version[SIZE_PROTOCOLVERSION])
     }
 }
 
+static bool IsSeason6PacketF3Subcode(int subcode)
+{
+    return subcode == 0x50 || subcode == 0x51 || subcode == 0x52 || subcode == 0x53;
+}
+
+static void LogSkippedLegacyPacket(int headCode, int subcode)
+{
+    g_ConsoleDebug->Write(MCD_NORMAL, L"Skipping Season 6 packet [0x%02X][0x%02X] on legacy server", headCode, subcode);
+}
+
 int DirTable[16] = { -1,-1,  0,-1,  1,-1,  1,0,  1,1,  0,1,  -1,1,  -1,0 };
 
 wchar_t    Password[MAX_USERNAME_SIZE + 1];
@@ -1342,12 +1352,12 @@ int CalcItemLength(std::span<const BYTE> ReceiveBuffer)
         size++;
     }
 
-    if (Data->OptionFlags & ItemOptionFlags::HasHarmony)
+    if (IsSeason6FeatureEnabled() && (Data->OptionFlags & ItemOptionFlags::HasHarmony))
     {
         size++;
     }
 
-    if (Data->OptionFlags & ItemOptionFlags::HasSockets)
+    if (IsSeason6FeatureEnabled() && (Data->OptionFlags & ItemOptionFlags::HasSockets))
     {
         auto socketCount = ReceiveBuffer[size] & 0xF;
         size++;
@@ -13068,16 +13078,50 @@ static void ProcessPacket(const BYTE* ReceiveBuffer, int32_t Size)
             ReceiveServerCommand(ReceiveBuffer);
             break;
         case 0x50:
-            Receive_Master_Level_Exp(ReceiveBuffer, Size);
+            if (IsSeason6FeatureEnabled())
+            {
+                Receive_Master_Level_Exp(ReceiveBuffer, Size);
+            }
+            else
+            {
+                LogSkippedLegacyPacket(0xF3, subcode);
+            }
             break;
         case 0x51:
-            Receive_Master_LevelUp(ReceiveBuffer, Size);
+            if (IsSeason6FeatureEnabled())
+            {
+                Receive_Master_LevelUp(ReceiveBuffer, Size);
+            }
+            else
+            {
+                LogSkippedLegacyPacket(0xF3, subcode);
+            }
             break;
         case 0x52:
-            Receive_Master_LevelGetSkill(ReceiveBuffer);
+            if (IsSeason6FeatureEnabled())
+            {
+                Receive_Master_LevelGetSkill(ReceiveBuffer);
+            }
+            else
+            {
+                LogSkippedLegacyPacket(0xF3, subcode);
+            }
             break;
         case 0x53:
-            Receive_Master_SetSkillList((PMSG_MASTER_SKILL_LIST_SEND*)ReceiveBuffer);
+            if (IsSeason6FeatureEnabled())
+            {
+                Receive_Master_SetSkillList((PMSG_MASTER_SKILL_LIST_SEND*)ReceiveBuffer);
+            }
+            else
+            {
+                LogSkippedLegacyPacket(0xF3, subcode);
+            }
+            break;
+        default:
+            if (!IsSeason6FeatureEnabled() && IsSeason6PacketF3Subcode(subcode))
+            {
+                LogSkippedLegacyPacket(0xF3, subcode);
+            }
             break;
         }
         break;
