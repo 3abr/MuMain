@@ -15,6 +15,7 @@
 #include "NewUISystem.h"
 #include "SkillManager.h"
 #include "CSItemOption.h"
+#include "WSclient.h"
 
 #include <algorithm>
 #include <array>
@@ -49,6 +50,11 @@ void ReportFileIssue(const wchar_t* filename, const wchar_t* issue)
     g_ErrorReport.Write(text);
     MessageBox(g_hWnd, text, nullptr, MB_OK);
     SendMessage(g_hWnd, WM_DESTROY, 0, 0);
+}
+
+bool HasAncientBonus(const ITEM* item)
+{
+    return item != nullptr && IsSeason6FeatureEnabled() && item->AncientBonusOption > 0;
 }
 }
 
@@ -637,6 +643,12 @@ int CSItemOption::GetDefaultOptionValue(ITEM* ip, std::uint16_t* Value)
         return -1;
     }
 
+    if (!IsSeason6FeatureEnabled())
+    {
+        *Value = 0;
+        return -1;
+    }
+
     *Value = ip->AncientBonusOption;
 
     const ITEM_ATTRIBUTE* p = &ItemAttribute[ip->Type];
@@ -651,7 +663,12 @@ bool CSItemOption::GetDefaultOptionText(const ITEM* ip, wchar_t* Text)
         return false;
     }
 
-    if (ip->AncientBonusOption <= 0)
+    if (!IsSeason6FeatureEnabled())
+    {
+        return false;
+    }
+
+    if (!HasAncientBonus(ip))
     {
         return false;
     }
@@ -876,6 +893,12 @@ void CSItemOption::CheckItemSetOptions()
     const ITEM* itemRight = nullptr;
 
     std::fill(std::begin(m_SetSearchResult), std::end(m_SetSearchResult), SET_SEARCH_RESULT_OPT{});
+
+    if (!IsSeason6FeatureEnabled())
+    {
+        m_SetSearchResultCount = 0;
+        return;
+    }
 
     for (int i = 0; i < MAX_EQUIPMENT_INDEX; ++i)
     {
@@ -1138,6 +1161,11 @@ void CSItemOption::RenderOptionHelper(void)
 
 int CSItemOption::RenderSetOptionListInItem(const ITEM* ip, int TextNum, bool bIsEquippedItem)
 {
+    if (!IsSeason6FeatureEnabled())
+    {
+        return TextNum;
+    }
+
     if (ip->AncientDiscriminator == 0)
     {
         return TextNum;
