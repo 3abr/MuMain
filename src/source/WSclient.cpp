@@ -622,6 +622,67 @@ void ReceiveCharacterListExtended(const BYTE* ReceiveBuffer)
     CurrentProtocolState = RECEIVE_CHARACTERS_LIST;
 }
 
+void ReceiveCharacterList095(const BYTE* ReceiveBuffer, int Size)
+{
+    InitGuildWar();
+
+    if (Size < 5)
+    {
+        return;
+    }
+
+    const BYTE characterCount = ReceiveBuffer[4];
+    const int expectedSize = 5 + (static_cast<int>(characterCount) * 26);
+    if (characterCount > 5 || expectedSize > Size)
+    {
+        return;
+    }
+
+    CharacterAttribute->IsVaultExtended = 0;
+    int offset = 5;
+    for (int i = 0; i < characterCount; ++i)
+    {
+        const BYTE* data = ReceiveBuffer + offset;
+        const BYTE index = data[0];
+        if (index > 4)
+        {
+            offset += 26;
+            continue;
+        }
+
+        float fPos[2], fAngle = 0.0f;
+        switch (index)
+        {
+        case 0: fPos[0] = 8008.0f; fPos[1] = 18885.0f; fAngle = 115.0f; break;
+        case 1: fPos[0] = 7986.0f; fPos[1] = 19145.0f; fAngle = 90.0f; break;
+        case 2: fPos[0] = 8046.0f; fPos[1] = 19400.0f; fAngle = 75.0f; break;
+        case 3: fPos[0] = 8133.0f; fPos[1] = 19645.0f; fAngle = 60.0f; break;
+        case 4: fPos[0] = 8282.0f; fPos[1] = 19845.0f; fAngle = 35.0f; break;
+        default:
+            offset += 26;
+            continue;
+        }
+
+        const auto serverClass = static_cast<SERVER_CLASS_TYPE>(data[15] >> 5);
+        const auto iClass = gCharacterManager.ChangeServerClassTypeToClientClassType(serverClass);
+        CHARACTER* c = CreateHero(index, iClass, 0, fPos[0], fPos[1], fAngle);
+        c->Level = static_cast<WORD>(data[12] | (data[13] << 8));
+        c->CtlCode = static_cast<BYTE>(data[14] & 0x0F);
+
+        memset(c->ID, 0, sizeof(c->ID));
+        CMultiLanguage::ConvertFromUtf8(c->ID, data + 1, MAX_USERNAME_SIZE);
+
+        BYTE equipment[EQUIPMENT_LENGTH_EXTENDED] = { 0 };
+        const int copyCount = EQUIPMENT_LENGTH_EXTENDED < 11 ? EQUIPMENT_LENGTH_EXTENDED : 11;
+        memcpy(equipment, data + 15, copyCount);
+        ReadEquipmentExtended(index, 0, equipment);
+
+        offset += 26;
+    }
+
+    CurrentProtocolState = RECEIVE_CHARACTERS_LIST;
+}
+
 CHARACTER_ENABLE g_CharCardEnable;
 
 void ReceiveCharacterCard_New(const BYTE* ReceiveBuffer)
@@ -13039,6 +13100,16 @@ static void ProcessPacket(const BYTE* ReceiveBuffer, int32_t Size)
         switch (subcode)
         {
         case 0x00: //receive characters list
+            if (bIsC1C3 && Size >= 5)
+            {
+                const int count = ReceiveBuffer[4];
+                if (Size == (5 + (count * 26)))
+                {
+                    ReceiveCharacterList095(ReceiveBuffer, Size);
+                    break;
+                }
+            }
+
             ReceiveCharacterListExtended(ReceiveBuffer);
             break;
         case 0x01: //receive create character

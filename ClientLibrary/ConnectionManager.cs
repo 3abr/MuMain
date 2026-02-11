@@ -134,7 +134,7 @@ public unsafe partial class ConnectionManager
         var socketConnection = SocketConnection.Create(tcpClient.Client);
 
         var encryptor = isEncrypted ? new PipelinedXor32Encryptor(new PipelinedSimpleModulusEncryptor(socketConnection.Output, PipelinedSimpleModulusEncryptor.DefaultClientKey).Writer, PreSeason6Xor32Key) : null;
-        var decryptor = isEncrypted ? new PipelinedSimpleModulusDecryptor(socketConnection.Input, PipelinedSimpleModulusDecryptor.DefaultClientKey) : null;
+        var decryptor = isEncrypted ? new PipelinedSimpleModulusDecryptor(socketConnection.Input, PipelinedSimpleModulusDecryptor.DefaultServerKey) : null;
         var connection = new Connection(socketConnection, decryptor, encryptor, new NullLogger<Connection>());
 
         var handle = Interlocked.Increment(ref _maxHandle);
