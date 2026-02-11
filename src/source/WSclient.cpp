@@ -76,24 +76,36 @@
 #define MAX_DEBUG_MAX 10
 
 // =============================================================================
-// CLIENT VERSION CONFIGURATION
+// CLIENT VERSION CONFIGURATION - v0.97 COMPATIBILITY STATUS
 // =============================================================================
-// Uncomment one of the following to select client version:
 //
-// #define ENABLE_V097_COMPAT    // MU Online v0.97 compatibility
-// #define ENABLE_S6_COMPAT      // Season 6 Episode 3 (default)
+// BUILD TARGETS:
+//   - windows-x86-release / windows-x64-release: Season 6 (2.04d) [DEFAULT]
+//   - windows-x86-v097-release / windows-x64-v097-release: v0.97 (0.97.0)
 //
-// Default: Season 6 Episode 3 (2.04d)
+// VERSION DETAILS:
+//   Season 6: Version "2.04d" ({ '2', '0', '4', '0', '4' }),
+//             Serial "k1Pk2jcET48mxL3b", extended protocol path
+//   v0.97:    Version "0.97.0" ({ '0', '9', '7', '0', '0' }),
+//             Serial "TtbM2s5hUkYarzZ1", legacy protocol compatibility path
 //
-// MU Online v0.97:
-// - Version format: 0.9.7.0 -> { '0', '9', '7', '0', '0' }
-// - Serial requirement: "TtbM2s5hUkYarzZ1" (legacy format)
-// - Protocol note: use legacy packet compatibility path
+// KNOWN LIMITATIONS WHEN CONNECTED TO v0.97 SERVER:
+//   - Master Level System: DISABLED
+//   - Combo Skills: DISABLED
+//   - Socket System: DISABLED
+//   - Ancient Item Rendering: DISABLED
+//   - Harmony System: DISABLED
+//   - Season 6 packet extensions are ignored when unsupported by server
 //
-// Season 6 Episode 3:
-// - Version format: 2.04d -> { '2', '0', '4', '0', '4' }
-// - Serial requirement: "k1Pk2jcET48mxL3b"
-// - Protocol note: use Season 6 extended protocol path
+// USAGE:
+//   cmake --preset windows-x86-v097-release
+//   cmake --build --preset windows-x86-v097-release --config Release
+//
+// TESTING:
+//   - Requires a reachable v0.97 compatible MU Online server
+//   - Full gameplay verification requires Windows runtime (native or Wine)
+//   - Check logs for version bytes and feature capability output after join
+//
 // =============================================================================
 
 extern BYTE m_AltarState[];
