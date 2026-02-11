@@ -106,6 +106,8 @@ file(GLOB_RECURSE MU_MAIN_SOURCES
   CONFIGURE_DEPENDS
         "source/*.cpp"
 )
+list(FILTER MU_MAIN_SOURCES EXCLUDE REGEX "wzAudio_stubs\\.cpp$")
+list(FILTER MU_MAIN_SOURCES EXCLUDE REGEX "wzAudio_impl\\.cpp$")
 
 # Add MuEditor sources when editor is enabled
 if(ENABLE_EDITOR)
@@ -443,31 +445,51 @@ if (CMAKE_CXX_COMPILER MATCHES "mingw32" OR CMAKE_CXX_COMPILER MATCHES "w64-ming
     message(FATAL_ERROR "Static libturbojpeg not found (libturbojpeg.a) or CMake picked an import library (.dll.a): '${MU_TURBOJPEG_STATIC_LIB}'. Install/build a MinGW-w64 static libjpeg-turbo to avoid shipping libturbojpeg.dll, or set MU_TURBOJPEG_STATIC_LIB to the full path of libturbojpeg.a.")
   endif()
 
-  target_link_libraries(Main PRIVATE
-    imm32
-    vfw32
-    dsound
-    dxguid
-    opengl32
-    glu32
-    winmm
-    ws2_32
-    version
-    shlwapi
-    crypt32
-    wininet
-    urlmon
-    gdi32
-    user32
-    ole32
-    oleaut32
-    uuid
-    comdlg32
-    advapi32
-    ${MU_TURBOJPEG_STATIC_LIB}
-    wzAudio
-  )
-endif()
+  set(MU_WZAUDIO_LIB "")
+  if (CMAKE_SIZEOF_VOID_P EQUAL 4)
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/lib/x86/wzAudio.lib")
+      set(MU_WZAUDIO_LIB "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/lib/x86/wzAudio.lib")
+    elseif (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/lib/wzAudio.lib")
+      set(MU_WZAUDIO_LIB "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/lib/wzAudio.lib")
+    else()
+      message(FATAL_ERROR "wzAudio import library not found for MinGW x86 build. Expected dependencies/lib/x86/wzAudio.lib.")
+    endif()
+  endif()
+
+   target_link_libraries(Main PRIVATE
+     imm32
+     vfw32
+     dsound
+     dxguid
+     opengl32
+     glu32
+     winmm
+     ws2_32
+     version
+     shlwapi
+     crypt32
+     wininet
+     urlmon
+     gdi32
+     user32
+     ole32
+     oleaut32
+     uuid
+     comdlg32
+     advapi32
+     ${MU_TURBOJPEG_STATIC_LIB}
+     ${MU_WZAUDIO_LIB}
+   )
+   
+   if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+     target_sources(Main PRIVATE
+       "${CMAKE_CURRENT_SOURCE_DIR}/source/wzAudio_impl.cpp"
+       "${CMAKE_CURRENT_SOURCE_DIR}/source/stb_vorbis_impl.c"
+     )
+     target_include_directories(Main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/stb")
+     message(STATUS "Using wzAudio DirectSound+stb_vorbis implementation for x64 build")
+   endif()
+ endif()
 
 # Link ImGui for all platforms when editor is enabled
 if(ENABLE_EDITOR)
