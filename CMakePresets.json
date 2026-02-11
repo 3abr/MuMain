@@ -75,6 +75,44 @@
       "cacheVariables": {
         "ENABLE_EDITOR": "ON"
       }
+    },
+    {
+      "name": "windows-x86-v097",
+      "displayName": "Windows x86 v0.97",
+      "description": "v0.97 compatibility build without editor features",
+      "inherits": "windows-x86",
+      "cacheVariables": {
+        "ENABLE_V097_COMPAT": "ON"
+      }
+    },
+    {
+      "name": "windows-x64-v097",
+      "displayName": "Windows x64 v0.97",
+      "description": "v0.97 compatibility build without editor features",
+      "inherits": "windows-x64",
+      "cacheVariables": {
+        "ENABLE_V097_COMPAT": "ON"
+      }
+    },
+    {
+      "name": "windows-x86-v097-release",
+      "hidden": true,
+      "inherits": "windows-x86-v097"
+    },
+    {
+      "name": "windows-x86-v097-debug",
+      "hidden": true,
+      "inherits": "windows-x86-v097"
+    },
+    {
+      "name": "windows-x64-v097-release",
+      "hidden": true,
+      "inherits": "windows-x64-v097"
+    },
+    {
+      "name": "windows-x64-v097-debug",
+      "hidden": true,
+      "inherits": "windows-x64-v097"
     }
   ],
   "buildPresets": [
@@ -124,6 +162,30 @@
       "name": "windows-x64-mueditor-release",
       "displayName": "x64 MuEditor Release",
       "configurePreset": "windows-x64-mueditor",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-x86-v097-debug",
+      "displayName": "x86 v0.97 Debug",
+      "configurePreset": "windows-x86-v097-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-x86-v097-release",
+      "displayName": "x86 v0.97 Release",
+      "configurePreset": "windows-x86-v097-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-x64-v097-debug",
+      "displayName": "x64 v0.97 Debug",
+      "configurePreset": "windows-x64-v097-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-x64-v097-release",
+      "displayName": "x64 v0.97 Release",
+      "configurePreset": "windows-x64-v097-release",
       "configuration": "Release"
     }
   ]
