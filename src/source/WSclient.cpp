@@ -106,7 +106,13 @@ MASTER_LEVEL_VALUE	Master_Level_Data;
 //BYTE Version[SIZE_PROTOCOLVERSION] = {'1'+1, '0'+2, '4'+3, '0'+4, '5'+5};
 //BYTE Serial[SIZE_PROTOCOLSERIAL+1] = {"TbYehR2hFUPBKgZj"};
 
+#ifdef ENABLE_V097_COMPAT
+// Format: major.minor.revision.subrevision = 0.9.7.0
+BYTE Version[SIZE_PROTOCOLVERSION] = { '0', '9', '7', '0', '0' };
+#else
+// Season 6 default
 BYTE Version[SIZE_PROTOCOLVERSION] = { '2', '0', '4', '0', '4' };
+#endif
 BYTE Serial[SIZE_PROTOCOLSERIAL + 1] = { "k1Pk2jcET48mxL3b" };
 Connection* SocketClient = nullptr;
 bool EnableSocket = false;
