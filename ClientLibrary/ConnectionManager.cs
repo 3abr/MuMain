@@ -23,6 +23,14 @@ using Pipelines.Sockets.Unofficial;
 /// </summary>
 public unsafe partial class ConnectionManager
 {
+    private static readonly byte[] PreSeason6Xor32Key =
+    {
+        0xE7, 0x6D, 0x3A, 0x89, 0xBC, 0xB2, 0x9F, 0x73,
+        0x23, 0xA8, 0xFE, 0xB6, 0x49, 0x5D, 0x39, 0x5D,
+        0x8A, 0xCB, 0x63, 0x8D, 0xEA, 0x7D, 0x2B, 0x5F,
+        0xC3, 0xB1, 0xE9, 0x83, 0x29, 0x51, 0xE8, 0x56,
+    };
+
     /// <summary>
     /// The currently active connections, with their handle as key.
     /// </summary>
@@ -125,7 +133,7 @@ public unsafe partial class ConnectionManager
 
         var socketConnection = SocketConnection.Create(tcpClient.Client);
 
-        var encryptor = isEncrypted ? new PipelinedXor32Encryptor(new PipelinedSimpleModulusEncryptor(socketConnection.Output, PipelinedSimpleModulusEncryptor.DefaultClientKey).Writer) : null;
+        var encryptor = isEncrypted ? new PipelinedXor32Encryptor(new PipelinedSimpleModulusEncryptor(socketConnection.Output, PipelinedSimpleModulusEncryptor.DefaultClientKey).Writer, PreSeason6Xor32Key) : null;
         var decryptor = isEncrypted ? new PipelinedSimpleModulusDecryptor(socketConnection.Input, PipelinedSimpleModulusDecryptor.DefaultClientKey) : null;
         var connection = new Connection(socketConnection, decryptor, encryptor, new NullLogger<Connection>());
 
