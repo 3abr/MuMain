@@ -75,6 +75,27 @@
 
 #define MAX_DEBUG_MAX 10
 
+// =============================================================================
+// CLIENT VERSION CONFIGURATION
+// =============================================================================
+// Uncomment one of the following to select client version:
+//
+// #define ENABLE_V097_COMPAT    // MU Online v0.97 compatibility
+// #define ENABLE_S6_COMPAT      // Season 6 Episode 3 (default)
+//
+// Default: Season 6 Episode 3 (2.04d)
+//
+// MU Online v0.97:
+// - Version format: 0.9.7.0 -> { '0', '9', '7', '0', '0' }
+// - Serial requirement: "TtbM2s5hUkYarzZ1" (legacy format)
+// - Protocol note: use legacy packet compatibility path
+//
+// Season 6 Episode 3:
+// - Version format: 2.04d -> { '2', '0', '4', '0', '4' }
+// - Serial requirement: "k1Pk2jcET48mxL3b"
+// - Protocol note: use Season 6 extended protocol path
+// =============================================================================
+
 extern BYTE m_AltarState[];
 extern int g_iChatInputType;
 extern BOOL g_bUseChatListBox;
