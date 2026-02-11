@@ -79,6 +79,10 @@
 #define PACKET_ATTACK       0x11
 
 extern int CurrentProtocolState;
+extern bool g_bServerSupportsSeason6;
+extern int g_nServerVersion;
+
+bool IsSeason6FeatureEnabled();
 
 inline uint64_t ntoh64(uint64_t value)
 {

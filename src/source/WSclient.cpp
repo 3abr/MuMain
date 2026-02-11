@@ -148,6 +148,10 @@ bool EnableSocket = false;
 
 BOOL    g_bGameServerConnected = FALSE;
 
+bool g_bServerSupportsSeason6 = true;
+int g_nServerVersion = 20404;
+static BYTE g_ServerVersionBytes[SIZE_PROTOCOLVERSION] = { '2', '0', '4', '0', '4' };
+
 MATCH_RESULT	g_wtMatchResult;
 PMSG_MATCH_TIMEVIEW	g_wtMatchTimeLeft;
 int g_iGoalEffect = 0;
@@ -156,6 +160,47 @@ CROWN_SWITCH_INFO* Switch_Info = nullptr;
 
 int     HeroKey;
 int     CurrentProtocolState;
+
+static bool IsVersionDigit(BYTE value)
+{
+    return value >= '0' && value <= '9';
+}
+
+static int ParseProtocolVersion(const BYTE version[SIZE_PROTOCOLVERSION])
+{
+    int parsedVersion = 0;
+    for (int i = 0; i < SIZE_PROTOCOLVERSION; ++i)
+    {
+        parsedVersion *= 10;
+        if (IsVersionDigit(version[i]))
+        {
+            parsedVersion += version[i] - '0';
+        }
+    }
+
+    return parsedVersion;
+}
+
+bool IsSeason6FeatureEnabled()
+{
+#ifdef ENABLE_V097_COMPAT
+    return g_bServerSupportsSeason6;
+#else
+    return true;
+#endif
+}
+
+static void OnServerHandshake(const BYTE version[SIZE_PROTOCOLVERSION])
+{
+    memcpy(g_ServerVersionBytes, version, SIZE_PROTOCOLVERSION);
+    g_nServerVersion = ParseProtocolVersion(version);
+    g_bServerSupportsSeason6 = g_nServerVersion >= 20000;
+
+    if (!g_bServerSupportsSeason6)
+    {
+        g_ErrorReport.Write(L"Connected to legacy MU protocol server. Season 6-only features will be disabled.\r\n");
+    }
+}
 
 int DirTable[16] = { -1,-1,  0,-1,  1,-1,  1,0,  1,1,  0,1,  -1,1,  -1,0 };
 
@@ -355,6 +400,8 @@ void ReceiveServerConnectBusy(const BYTE* ReceiveBuffer)
 void ReceiveJoinServer(const BYTE* ReceiveBuffer)
 {
     auto Data2 = (LPPRECEIVE_JOIN_SERVER)ReceiveBuffer;
+
+    OnServerHandshake(Data2->Version);
 
     if (LogIn != 0)
     {
