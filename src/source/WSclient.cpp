@@ -113,7 +113,14 @@ BYTE Version[SIZE_PROTOCOLVERSION] = { '0', '9', '7', '0', '0' };
 // Season 6 default
 BYTE Version[SIZE_PROTOCOLVERSION] = { '2', '0', '4', '0', '4' };
 #endif
+#ifdef ENABLE_V097_COMPAT
+// v0.97 serial is legacy format. Verify server configuration before changing.
+// v0.97 compatible serial.
+BYTE Serial[SIZE_PROTOCOLSERIAL + 1] = { "TtbM2s5hUkYarzZ1" };
+#else
+// Season 6 default serial
 BYTE Serial[SIZE_PROTOCOLSERIAL + 1] = { "k1Pk2jcET48mxL3b" };
+#endif
 Connection* SocketClient = nullptr;
 bool EnableSocket = false;
 
